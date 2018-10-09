@@ -1,7 +1,9 @@
 import './style.css';
 import configElevators from './configElevators';
 import { form, buildingStructure } from './ui';
-import { selectElevator, asignFloorToElevator, runElevator } from './elevatorController';
+import {
+  selectElevator, asignFloorToElevator, runElevator, selectNextFloor,
+} from './elevatorController';
 
 let elevators = [];
 
@@ -21,7 +23,7 @@ createBuildingButton.addEventListener('click', (e) => {
   const nElevators = Number(inputElevators.value);
   const nFloors = Number(inputFloor.value);
 
-  elevators = [...configElevators(nElevators, nFloors, runElevator)];
+  elevators = [...configElevators(nElevators, nFloors, runElevator, selectNextFloor)];
   // Remove Form
   settingsSection.parentNode.removeChild(settingsSection);
 
@@ -46,7 +48,6 @@ createBuildingButton.addEventListener('click', (e) => {
       } else {
         asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
       }
-      console.log(elevators);
     });
   });
 });

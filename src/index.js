@@ -1,7 +1,7 @@
 import './style.css';
 import configElevators from './configElevators';
 import { form, buildingStructure } from './ui';
-import { selectElevator, asignFloorToElevator } from './elevatorController';
+import { selectElevator, asignFloorToElevator, runElevator } from './elevatorController';
 
 let elevators = [];
 
@@ -21,7 +21,8 @@ createBuildingButton.addEventListener('click', (e) => {
   const nElevators = Number(inputElevators.value);
   const nFloors = Number(inputFloor.value);
 
-  elevators = [...configElevators(nElevators, nFloors)];
+  elevators = [...configElevators(nElevators, nFloors, runElevator)];
+  // Remove Form
   settingsSection.parentNode.removeChild(settingsSection);
 
   // Building Creation
@@ -29,16 +30,22 @@ createBuildingButton.addEventListener('click', (e) => {
 
   const floorButtons = document.getElementsByClassName('floor-button');
   Array.prototype.forEach.call(floorButtons, (el) => {
-    el.addEventListener('click', (e) => {
-      const floor = Number(e.target.dataset.floor);
-      const dir = Number(e.target.dataset.dir);
+    el.addEventListener('click', (ev) => {
+      const floor = Number(ev.target.dataset.floor);
+      const dir = Number(ev.target.dataset.dir);
 
       const floorCall = { floor, dir };
-      // Select Elevator
+      // Select Elevator to asign floor
       const elevatorId = selectElevator(floorCall, elevators, nFloors);
-      // Asign to Elevator
-      asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
-
+      // Asign floor to Elevator
+      const elevatorQueue = elevators[elevatorId].queue;
+      if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
+        asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+        // Run Elevator
+        elevators[elevatorId].startEngine();
+      } else {
+        asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+      }
       console.log(elevators);
     });
   });

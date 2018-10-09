@@ -9,13 +9,15 @@ const {
 } = config;
 
 export function runElevator() {
-  if (this.queue.length) {
+  const queueUp = this.queue[2].length;
+  const queueDown = this.queue[1].length;
+  if (queueUp || queueDown) {
     console.log(`${nextFloors} ${this.queue}`);
     console.log(`${waitingMs}`);
     setTimeout(() => {
       console.log(`${closingDoors}`);
       setTimeout(() => {
-        this.queue.splice(0, 2);
+        // this.queue.splice(0, 2);
         console.log('Moving');
         setTimeout(() => {
           console.log(`${arrived}`);

@@ -1,7 +1,6 @@
-import runElevator from './elevatorController';
 import floorParameters from './floorParameters';
 
-export default function configElevators(nElevators, nFloors) {
+export default function configElevators(nElevators, nFloors, runElevator) {
   const floorParams = floorParameters(nFloors);
   const engine = {
     floorParameters: floorParams,

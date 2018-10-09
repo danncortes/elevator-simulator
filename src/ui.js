@@ -1,11 +1,5 @@
 import config from './config';
 
-export function floorButton(floor, dir) {
-  return `<button class="floor-button" data-dir="${dir}">Floor ${floor}</button>`;
-}
-
-export const elevatorUI = '<div></div>';
-
 export const form = (
   `<section class="settings">
     <form class="initial-setting-form">
@@ -62,8 +56,8 @@ function createElevatorsStructure(elevators, floors) {
 }
 
 function insertControls(floor, floors) {
-  const buttonUp = `<div class="floor-button up" data-dir="1"><span>${'>'}</span></div>`;
-  const buttonDown = `<div class="floor-button down" data-dir="0"><span>${'>'}</span></div>`;
+  const buttonUp = `<div class="floor-button up" data-dir="2" data-floor="${floor}"><span>${'>'}</span></div>`;
+  const buttonDown = `<div class="floor-button down" data-dir="1" data-floor="${floor}"><span>${'>'}</span></div>`;
 
   if (floor === 1) {
     return buttonUp;
@@ -83,6 +77,7 @@ function createFloorControl(floors) {
 }
 
 export function buildingStructure(floors, elevators) {
+  const { floorHeight } = config.building;
   return (
     `<section class="building-area">
     <div class="building-container">
@@ -90,7 +85,7 @@ export function buildingStructure(floors, elevators) {
         ${createFloorNumbers(floors)}
       </div>
       <div class="building">
-        <div class="floors">
+        <div class="floors" style="bottom:${floorHeight}px;">
           ${createFloors(floors)}
         </div>
         <div class="elevators-cont">

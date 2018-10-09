@@ -1,6 +1,7 @@
 import './style.css';
 import configElevators from './configElevators';
 import { form, buildingStructure } from './ui';
+import { selectElevator, asignFloorToElevator } from './elevatorController';
 
 let elevators = [];
 
@@ -25,6 +26,22 @@ createBuildingButton.addEventListener('click', (e) => {
 
   // Building Creation
   mainContainer.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
+
+  const floorButtons = document.getElementsByClassName('floor-button');
+  Array.prototype.forEach.call(floorButtons, (el) => {
+    el.addEventListener('click', (e) => {
+      const floor = Number(e.target.dataset.floor);
+      const dir = Number(e.target.dataset.dir);
+
+      const floorCall = { floor, dir };
+      // Select Elevator
+      const elevatorId = selectElevator(floorCall, elevators, nFloors);
+      // Asign to Elevator
+      asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+
+      console.log(elevators);
+    });
+  });
 });
 
 const floorButton = document.querySelector('.floor-button');

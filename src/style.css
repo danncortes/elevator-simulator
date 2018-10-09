@@ -90,7 +90,6 @@ h1 {
 
 .building-container .building .floors {
   position: absolute;
-  bottom:38px;
   top:58px;
   width:100%;
   display: flex;

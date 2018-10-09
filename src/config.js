@@ -1,8 +1,8 @@
 export default {
   speed: 1,
   building: {
-    floorHeight: 38,
-    elevatorHeight: 38,
+    floorHeight: 34,
+    elevatorHeight: 34,
     elevatorWidth: 25,
     floorDivHeight: 8,
     elevatorLaneHeight(floors) {

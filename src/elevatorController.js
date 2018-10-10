@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import config from './config';
+import { insertLog } from './ui';
 
 const {
   messages: {
@@ -10,23 +11,26 @@ const {
 
 export function moveElevator(elevatorId) {
   const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`);
-  console.log(elevator);
+}
+
+function removeLog(elevator) {
+  const logContainer = document.querySelector(`.log-${elevator} ul`);
+  logContainer.innerHTML = '';
 }
 
 export function runElevator() {
   this.selectNextFloor();
   const { next, elevator } = this;
   if (next) {
-    console.log(`${nextFloors} ${next}`);
-    console.log(`${waitingMs}`);
+    insertLog(`${nextFloors} ${next}`, elevator);
+    insertLog(`${waitingMs}`, elevator);
     setTimeout(() => {
-      console.log(`${closingDoors}`);
+      insertLog(`${closingDoors}`, elevator);
       setTimeout(() => {
-        // this.queue.splice(0, 2);
         moveElevator(elevator);
-        console.log('Moving');
+        insertLog('Moving...', elevator);
         setTimeout(() => {
-          console.log(`${arrived}`);
+          removeLog(elevator);
           runElevator.call(this);
         }, 4000);
       }, openCloseDoors);
@@ -34,24 +38,18 @@ export function runElevator() {
   }
 }
 
-
 export function selectElevator(floorCall, elevators, floors) {
-  const stoppedElevators = {};
-  for (const key in elevators) {
-    if (elevators[key].dir === 0) {
-      stoppedElevators[key] = elevators[key];
-    }
-  }
-  elevators = (_.isEmpty(stoppedElevators)) ? elevators : stoppedElevators;
+  const stoppedElevators = _.filter(elevators, el => el.dir === 0);
+  elevators = !stoppedElevators.length ? elevators : stoppedElevators;
 
   const dirCall = floorCall.dir;
   let closestElevator;
   let distance = 0;
 
-  for (const elevator in elevators) {
-    const elevatorFloor = elevators[elevator].floor;
-    const { dir } = elevators[elevator];
-    const id = elevator;
+  _.forEach(elevators, (elevator, key) => {
+    const elevatorFloor = elevator.floor;
+    const { dir } = elevator;
+    const id = key;
 
     if (dirCall === 2) {
       // Called to Go up
@@ -64,8 +62,7 @@ export function selectElevator(floorCall, elevators, floors) {
           distance = floors.length - elevatorFloor - 1 + floors.length + floorCall.floor - 1;
         }
       }
-    } else {
-      // Called to down
+    } else if (dirCall === 1) {
       if (dir === 2) { // Elevator going Up
         distance = (floors.length - elevatorFloor) + (floors.length - floorCall.floor);
       } else if (dir === 1) { // Elevator going Down
@@ -75,25 +72,22 @@ export function selectElevator(floorCall, elevators, floors) {
           distance = floors.length - 1 + floorCall.floor - 1 + elevatorFloor - 1;
         }
       }
-    }
-
-    if (dir === 1 || dir === 2) {
-      if (dir === 0) {
-        if (floorCall.floor > elevatorFloor) {
-          distance = floorCall.floor - elevatorFloor;
-        } else {
-          distance = floorCall.floor - elevatorFloor;
-        }
+    } else if (dir === 0) {
+      if (floorCall.floor > elevatorFloor) {
+        distance = floorCall.floor - elevatorFloor;
+      } else {
+        distance = floorCall.floor - elevatorFloor;
       }
     }
 
     const tempElevator = { id, distance };
     if (_.isEmpty(closestElevator)) {
       closestElevator = tempElevator;
+      console.log(closestElevator);
     } else {
       closestElevator = closestElevator.distance > distance ? tempElevator : closestElevator;
     }
-  }
+  });
   return closestElevator.id;
 }
 
@@ -114,9 +108,9 @@ export function selectNextFloor() {
   const queueDown = this.queue[1];
   if (dir === 0) {
     if (queueUp.length && !queueDown.length) {
-      next = queueUp[0];
+      [next] = queueUp;
     } else if (!queueUp.length && queueDown.length) {
-      next = queueDown[0];
+      [next] = queueDown;
     } else {
       const options = [queueUp[0], queueDown[0]];
       next = options.reduce((a, b) => (Math.abs(floor - a) < Math.abs(floor - b) ? a : b));
@@ -127,27 +121,29 @@ export function selectNextFloor() {
       if (higherFloor) {
         next = higherFloor;
       } else if (!higherFloor && queueDown.length) {
-        next = queueDown[0];
+        [next] = queueDown;
       } else {
-        next = queueUp[0];
+        [next] = queueUp;
       }
     } else if (queueDown.length) {
-      next = queueDown[0];
+      [next] = queueDown;
     }
   } else if (queueDown.length) {
     const lowerFloor = queueDown.find(el => el < floor);
     if (lowerFloor) {
       next = lowerFloor;
     } else if (!lowerFloor && queueUp.length) {
-      next = queueUp[0];
+      [next] = queueUp;
     } else {
-      next = queueDown[0];
+      [next] = queueDown;
     }
   } else if (queueUp.length) {
-    next = queueUp[0];
+    [next] = queueUp;
   }
   this.next = next;
   if (!next) {
     this.dir = 0;
+  } else {
+    this.dir = floor > next ? 1 : 2;
   }
 }

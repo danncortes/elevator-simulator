@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import config from './config';
 
 export const form = (
@@ -80,22 +81,44 @@ export function buildingStructure(floors, elevators) {
   const { floorHeight } = config.building;
   return (
     `<section class="building-area">
-    <div class="building-container">
-      <div class="floor-numbers">
-        ${createFloorNumbers(floors)}
-      </div>
-      <div class="building">
-        <div class="floors" style="bottom:${floorHeight}px;">
-          ${createFloors(floors)}
+      <div class="building-container">
+        <div class="floor-numbers">
+          ${createFloorNumbers(floors)}
         </div>
-        <div class="elevators-cont">
-          ${createElevatorsStructure(elevators, floors)}
+        <div class="building">
+          <div class="floors" style="bottom:${floorHeight}px;">
+            ${createFloors(floors)}
+          </div>
+          <div class="elevators-cont">
+            ${createElevatorsStructure(elevators, floors)}
+          </div>
+        </div>
+        <div class="controls">
+          ${createFloorControl(floors)}
         </div>
       </div>
-      <div class="controls">
-        ${createFloorControl(floors)}
-      </div>
+    </section>`
+  );
+}
+
+export const logArea = (
+  `<section class="log-area">
+    <div class="log-container">
     </div>
   </section>`
-  );
+);
+
+export function createLogStructure(elevators) {
+  let logStructure = '';
+  _.forEach(elevators, (elev) => {
+    logStructure += `<div class="log log-${elev.elevator}"><h2>Elevator ${elev.elevator}</h2><ul></ul></div>`;
+  });
+  return logStructure;
+}
+
+export function insertLog(message, elevatorId) {
+  const logContainer = document.querySelector(`.log-${elevatorId} ul`);
+  if (logContainer) {
+    logContainer.insertAdjacentHTML('beforeend', `<li>${message}</li>`);
+  }
 }

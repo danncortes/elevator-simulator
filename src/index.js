@@ -1,6 +1,8 @@
 import './style.css';
 import configElevators from './configElevators';
-import { form, buildingStructure } from './ui';
+import {
+  form, buildingStructure, logArea, createLogStructure,
+} from './ui';
 import {
   selectElevator, asignFloorToElevator, runElevator, selectNextFloor,
 } from './elevatorController';
@@ -29,6 +31,14 @@ createBuildingButton.addEventListener('click', (e) => {
 
   // Building Creation
   mainContainer.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
+
+  // Log Area creation
+  mainContainer.insertAdjacentHTML('beforeend', logArea);
+
+  const logContainer = document.querySelector('.log-container');
+  if (logContainer) {
+    logContainer.insertAdjacentHTML('beforeend', createLogStructure(elevators));
+  }
 
   const floorButtons = document.getElementsByClassName('floor-button');
   Array.prototype.forEach.call(floorButtons, (el) => {

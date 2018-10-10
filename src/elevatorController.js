@@ -64,18 +64,17 @@ export function selectElevator(floorCall, elevators, floors) {
         if (elevatorFloor < floorCall.floor) {
           distance = floorCall.floor - elevatorFloor;
         } else {
-          console.log(distance);
-          distance = floors.length - elevatorFloor - 1 + floors.length + floorCall.floor - 1;
+          distance = floors - elevatorFloor - 1 + floors + floorCall.floor - 1;
         }
       }
     } else if (dirCall === 1) {
       if (dir === 2) { // Elevator going Up
-        distance = (floors.length - elevatorFloor) + (floors.length - floorCall.floor);
+        distance = (floors - elevatorFloor) + (floors - floorCall.floor);
       } else if (dir === 1) { // Elevator going Down
         if (elevatorFloor > floorCall.floor) {
           distance = elevatorFloor - floorCall.floor;
         } else {
-          distance = floors.length - 1 + floorCall.floor - 1 + elevatorFloor - 1;
+          distance = floors - 1 + floorCall.floor - 1 + elevatorFloor - 1;
         }
       }
     }

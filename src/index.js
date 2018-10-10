@@ -58,7 +58,6 @@ createBuildingButton.addEventListener('click', (e) => {
       } else {
         asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
       }
-      console.log(elevators);
     });
   });
 });

@@ -9,8 +9,11 @@ const {
   times: { openCloseDoors, waiting },
 } = config;
 
-export function moveElevator(elevatorId) {
-  const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`);
+export function moveElevator() {
+  const elevatorId = this.elevator;
+  const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
+  const position = this.floorParameters[this.next];
+  elevator.style.bottom = `${position}px`;
 }
 
 function removeLog(elevator) {
@@ -27,7 +30,7 @@ export function runElevator() {
     setTimeout(() => {
       insertLog(`${closingDoors}`, elevator);
       setTimeout(() => {
-        moveElevator(elevator);
+        moveElevator.call(this);
         insertLog('Moving...', elevator);
         setTimeout(() => {
           removeLog(elevator);

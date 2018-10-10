@@ -19,7 +19,7 @@ module.exports = (env, argv) => ({
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
   },
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   devServer: {
     open: true,
   },

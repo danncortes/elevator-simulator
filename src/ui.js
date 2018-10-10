@@ -86,7 +86,7 @@ export function buildingStructure(floors, elevators) {
           ${createFloorNumbers(floors)}
         </div>
         <div class="building">
-          <div class="floors" style="bottom:${floorHeight}px;">
+          <div class="floors" style="bottom:${floorHeight}px; top:${20 + floorHeight}px;">
             ${createFloors(floors)}
           </div>
           <div class="elevators-cont">

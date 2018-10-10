@@ -7,7 +7,7 @@ export default function configElevators(nElevators, nFloors, runElevator, select
     startEngine: runElevator,
     selectNextFloor,
   };
-  const elevators = [];
+  const elevators = {};
   for (let i = 1; i <= nElevators; i++) {
     const elevator = Object.create(engine, {
       elevator: {
@@ -31,7 +31,7 @@ export default function configElevators(nElevators, nFloors, runElevator, select
         enumerable: true,
       },
     });
-    elevators.push(elevator);
+    elevators[i] = elevator;
   }
   return elevators;
 }

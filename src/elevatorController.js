@@ -39,8 +39,13 @@ export function runElevator() {
 }
 
 export function selectElevator(floorCall, elevators, floors) {
-  const stoppedElevators = _.filter(elevators, el => el.dir === 0);
-  elevators = !stoppedElevators.length ? elevators : stoppedElevators;
+  const stoppedElevators = {};
+  for (const key in elevators) {
+    if (elevators[key].dir === 0) {
+      stoppedElevators[key] = elevators[key];
+    }
+  }
+  elevators = (_.isEmpty(stoppedElevators)) ? elevators : stoppedElevators;
 
   const dirCall = floorCall.dir;
   let closestElevator;
@@ -59,6 +64,7 @@ export function selectElevator(floorCall, elevators, floors) {
         if (elevatorFloor < floorCall.floor) {
           distance = floorCall.floor - elevatorFloor;
         } else {
+          console.log(distance);
           distance = floors.length - elevatorFloor - 1 + floors.length + floorCall.floor - 1;
         }
       }
@@ -72,7 +78,9 @@ export function selectElevator(floorCall, elevators, floors) {
           distance = floors.length - 1 + floorCall.floor - 1 + elevatorFloor - 1;
         }
       }
-    } else if (dir === 0) {
+    }
+
+    if (dir === 0 && (dirCall === 1 || dirCall === 2)) {
       if (floorCall.floor > elevatorFloor) {
         distance = floorCall.floor - elevatorFloor;
       } else {
@@ -83,7 +91,6 @@ export function selectElevator(floorCall, elevators, floors) {
     const tempElevator = { id, distance };
     if (_.isEmpty(closestElevator)) {
       closestElevator = tempElevator;
-      console.log(closestElevator);
     } else {
       closestElevator = closestElevator.distance > distance ? tempElevator : closestElevator;
     }

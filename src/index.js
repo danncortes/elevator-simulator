@@ -4,7 +4,7 @@ import {
   form, buildingStructure, logArea, createLogStructure,
 } from './uiCtrl';
 import {
-  selectElevator, asignFloorToElevator, runElevator, selectNextFloor,
+  selectElevator, asignFloorToElevator, runElevator, selectNextFloor, isAlreadyCalled, isAtTheFloor
 } from './elevatorCtrl';
 
 let elevators = [];
@@ -48,15 +48,20 @@ createBuildingButton.addEventListener('click', (e) => {
 
       const floorCall = { floor, dir };
       // Select Elevator to asign floor
-      const elevatorId = selectElevator(floorCall, elevators, nFloors);
-      // Asign floor to Elevator
-      const elevatorQueue = elevators[elevatorId].queue;
-      if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
-        asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
-        // Run Elevator
-        elevators[elevatorId].startEngine();
-      } else {
-        asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+      const isCalledAlready = isAlreadyCalled(floorCall, elevators);
+      const isAtTheSameFloor = isAtTheFloor(floorCall, elevators);
+
+      if (!isCalledAlready && !isAtTheSameFloor) {
+        const elevatorId = selectElevator(floorCall, elevators, nFloors);
+        // Asign floor to Elevator
+        const elevatorQueue = elevators[elevatorId].queue;
+        if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
+          asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+          // Run Elevator
+          elevators[elevatorId].startEngine();
+        } else {
+          asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+        }
       }
     });
   });

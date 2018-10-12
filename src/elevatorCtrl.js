@@ -56,28 +56,27 @@ export function runElevator() {
       insertLog(`${closingDoors}`, elevator);
       setTimeout(() => {
         moveElevator.call(this);
-        // insertLog('Moving...', elevator);
-        // setTimeout(() => {
-        //   removeLog(elevator);
-        //   runElevator.call(this);
-        // }, 4000);
       }, openCloseDoors);
     }, waiting);
   }
 }
 
-export function selectElevator(floorCall, elevators, floors) {
-  const isCalledAlready = _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
+export function isAlreadyCalled(floorCall, elevators) {
+  return _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
+}
 
-  if (isCalledAlready) {
-    return undefined;
-  }
+export function isAtTheFloor(floorCall, elevators) {
+  return _.find(_.filter(elevators, elevator => elevator.dir === 0), elev => elev.floor === floorCall.floor);
+}
+
+export function selectElevator(floorCall, elevators, floors) {
+
   const stoppedElevators = {};
-  for (const key in elevators) {
-    if (elevators[key].dir === 0) {
-      stoppedElevators[key] = elevators[key];
+  _.forEach(elevators, (el, key) => {
+    if(el.dir === 0) {
+      stoppedElevators[key] = el;
     }
-  }
+  });
 
   elevators = (_.isEmpty(stoppedElevators)) ? elevators : stoppedElevators;
 

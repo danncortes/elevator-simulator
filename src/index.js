@@ -1,11 +1,11 @@
 import './style.css';
-import configElevators from './configElevators';
+import configElevators from './elevatorModel';
 import {
   form, buildingStructure, logArea, createLogStructure,
-} from './ui';
+} from './uiCtrl';
 import {
   selectElevator, asignFloorToElevator, runElevator, selectNextFloor,
-} from './elevatorController';
+} from './elevatorCtrl';
 
 let elevators = [];
 

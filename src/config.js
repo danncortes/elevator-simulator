@@ -10,8 +10,7 @@ export default {
     },
   },
   times: {
-    timeByFloor: 3000,
-    movingTime: floors => floors * this.movingByFloor,
+    speedByFloor: 3000,
     openCloseDoors: 2000,
     waiting: 3500,
   },

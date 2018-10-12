@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import config from './config';
-import { insertLog } from './ui';
+import { insertLog } from './uiCtrl';
 
 const {
   messages: {
@@ -9,11 +9,36 @@ const {
   times: { openCloseDoors, waiting },
 } = config;
 
+export function removeFloorFromQueue() {
+  const { dir, queue, next } = this;
+  if (dir === 2) {
+    if (queue[dir][0] === next) {
+      this.floor = queue[dir].shift();
+    } else {
+      this.floor = queue[1].shift();
+    }
+  } else if (queue[dir][0] === next) {
+    this.floor = queue[dir].shift();
+  } else {
+    this.floor = queue[2].shift();
+  }
+}
+
 export function moveElevator() {
   const elevatorId = this.elevator;
   const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
   const position = this.floorParameters[this.next];
+  const floorDiff = Math.abs(this.floor - this.next);
+  const travelTime = config.times.speedByFloor * floorDiff;
+  insertLog('Moving...', elevatorId);
+  elevator.style.transition = `bottom ${travelTime}ms`;
   elevator.style.bottom = `${position}px`;
+  setTimeout(() => {
+    removeLog(elevatorId);
+    removeFloorFromQueue.call(this);
+    console.log(this);
+    runElevator.call(this);
+  }, travelTime);
 }
 
 function removeLog(elevator) {
@@ -31,23 +56,29 @@ export function runElevator() {
       insertLog(`${closingDoors}`, elevator);
       setTimeout(() => {
         moveElevator.call(this);
-        insertLog('Moving...', elevator);
-        setTimeout(() => {
-          removeLog(elevator);
-          runElevator.call(this);
-        }, 4000);
+        // insertLog('Moving...', elevator);
+        // setTimeout(() => {
+        //   removeLog(elevator);
+        //   runElevator.call(this);
+        // }, 4000);
       }, openCloseDoors);
     }, waiting);
   }
 }
 
 export function selectElevator(floorCall, elevators, floors) {
+  const isCalledAlready = _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
+
+  if (isCalledAlready) {
+    return undefined;
+  }
   const stoppedElevators = {};
   for (const key in elevators) {
     if (elevators[key].dir === 0) {
       stoppedElevators[key] = elevators[key];
     }
   }
+
   elevators = (_.isEmpty(stoppedElevators)) ? elevators : stoppedElevators;
 
   const dirCall = floorCall.dir;

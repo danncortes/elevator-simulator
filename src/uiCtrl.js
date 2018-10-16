@@ -7,13 +7,13 @@ export const form = (
       <div class="form-group">
         <label>How many Floors</label>
         <div>
-          <input id="floors" type="number" class="form-control" value="4" placeholder="Type a Number">
+          <input id="floors" type="number" class="form-control" value="4" min="4" max="25" placeholder="Type a Number">
         </div>
       </div>
       <div class="form-group">
         <label>How many elevators</label>
         <div>
-          <input id="elevators" type="number" class="form-control" value="1" placeholder="Type a Number">
+          <input id="elevators" type="number" class="form-control" value="1" min="1" max="6" placeholder="Type a Number">
         </div>
       </div>
       <div class="form-group button-cont">
@@ -57,8 +57,8 @@ function createElevatorsStructure(elevators, floors) {
 }
 
 function insertControls(floor, floors) {
-  const buttonUp = `<div class="floor-button up" data-dir="2" data-floor="${floor}"><span>${'>'}</span></div>`;
-  const buttonDown = `<div class="floor-button down" data-dir="1" data-floor="${floor}"><span>${'>'}</span></div>`;
+  const buttonUp = `<div class="floor-button up" data-dir="2" data-floor="${floor}"></div>`;
+  const buttonDown = `<div class="floor-button down" data-dir="1" data-floor="${floor}"></div>`;
 
   if (floor === 1) {
     return buttonUp;
@@ -111,14 +111,44 @@ export const logArea = (
 export function createLogStructure(elevators) {
   let logStructure = '';
   _.forEach(elevators, (elev) => {
-    logStructure += `<div class="log log-${elev.elevator}"><h2>Elevator ${elev.elevator}</h2><ul></ul></div>`;
+    const next = elev.next ? elev.next : 'None';
+    const queueUp = elev.queue[2].length ? elev.queue[2] : 'None';
+    const queueDown = elev.queue[1].length ? elev.queue[1] : 'None';
+    logStructure += `
+      <div class="log log-${elev.elevator}">
+        <h2>Elevator ${elev.elevator}</h2>
+        <section class="status-area">
+          <p><strong>Current floor:</strong><span class="current-floor"> ${elev.floor}</span></p>
+          <p><strong>Next:</strong><span class="next-floor"> ${next}</span></p>
+          <div>
+            <p><strong>Queue</strong></p>
+            <p>Up: <span class="queue-up"> ${queueUp}</span></p>
+            <p>Down: <span class="queue-down"> ${queueDown}</span></p>
+          </div>
+          <div class="log-status">
+            <p><strong>Log</strong></p>
+            <div class="log-content">
+
+            </div>
+          </div>
+        </section>
+      </div>
+    `;
   });
   return logStructure;
 }
 
 export function insertLog(message, elevatorId) {
-  const logContainer = document.querySelector(`.log-${elevatorId} ul`);
+  const logContainer = document.querySelector(`.log-${elevatorId} .log-content`);
   if (logContainer) {
-    logContainer.insertAdjacentHTML('beforeend', `<li>${message}</li>`);
+    logContainer.insertAdjacentHTML('beforeend', `<p>${message}</p>`);
+  }
+}
+
+export function insertStatus(elem, message, elevatorId) {
+  const statusCont = document.querySelector(`.log-${elevatorId} .${elem}`);
+  if (statusCont) {
+    statusCont.innerHTML = '';
+    statusCont.insertAdjacentHTML('beforeend', ` ${message}`);
   }
 }

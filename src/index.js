@@ -4,7 +4,7 @@ import {
   form, buildingStructure, logArea, createLogStructure,
 } from './uiCtrl';
 import {
-  selectElevator, asignFloorToElevator, runElevator, selectNextFloor, isAlreadyCalled, isAtTheFloor
+  selectElevator, asignFloorToElevator, runElevator, selectNextFloor, isAlreadyCalled, isAtTheFloor,
 } from './elevatorCtrl';
 
 let elevators = [];

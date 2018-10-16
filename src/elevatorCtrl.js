@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import config from './config';
-import { insertLog } from './uiCtrl';
+import { insertLog, insertStatus } from './uiCtrl';
 
 const {
   messages: {
@@ -24,6 +24,18 @@ export function removeFloorFromQueue() {
   }
 }
 
+function removeLog(elevator) {
+  const logContainer = document.querySelector(`.log-${elevator} .log-content`);
+  logContainer.innerHTML = '';
+}
+
+function removeStatus(container, elevator) {
+  const statusCont = document.querySelector(`.log-${elevator} .${container}`);
+  if (statusCont) {
+    statusCont.innerHTML = '';
+  }
+}
+
 export function moveElevator() {
   const elevatorId = this.elevator;
   const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
@@ -32,25 +44,26 @@ export function moveElevator() {
   const travelTime = config.times.speedByFloor * floorDiff;
   insertLog('Moving...', elevatorId);
   elevator.style.transition = `bottom ${travelTime}ms`;
+  elevator.style.transitionTimingFunction = 'ease-in-out';
   elevator.style.bottom = `${position}px`;
   setTimeout(() => {
     removeLog(elevatorId);
     removeFloorFromQueue.call(this);
-    console.log(this);
+    removeStatus('next-floor', elevatorId);
+    insertStatus('current-floor', this.floor, elevatorId);
     runElevator.call(this);
   }, travelTime);
-}
-
-function removeLog(elevator) {
-  const logContainer = document.querySelector(`.log-${elevator} ul`);
-  logContainer.innerHTML = '';
 }
 
 export function runElevator() {
   this.selectNextFloor();
   const { next, elevator } = this;
+  const queueUp = this.queue[2].length ? this.queue[2] : 'None';
+  const queueDown = this.queue[1].length ? this.queue[1] : 'None';
   if (next) {
-    insertLog(`${nextFloors} ${next}`, elevator);
+    insertStatus('next-floor', next, elevator);
+    insertStatus('queue-up', queueUp, elevator);
+    insertStatus('queue-down', queueDown, elevator);
     insertLog(`${waitingMs}`, elevator);
     setTimeout(() => {
       insertLog(`${closingDoors}`, elevator);
@@ -70,10 +83,9 @@ export function isAtTheFloor(floorCall, elevators) {
 }
 
 export function selectElevator(floorCall, elevators, floors) {
-
   const stoppedElevators = {};
   _.forEach(elevators, (el, key) => {
-    if(el.dir === 0) {
+    if (el.dir === 0) {
       stoppedElevators[key] = el;
     }
   });
@@ -113,11 +125,7 @@ export function selectElevator(floorCall, elevators, floors) {
     }
 
     if (dir === 0 && (dirCall === 1 || dirCall === 2)) {
-      if (floorCall.floor > elevatorFloor) {
-        distance = floorCall.floor - elevatorFloor;
-      } else {
-        distance = floorCall.floor - elevatorFloor;
-      }
+      distance = Math.abs(floorCall.floor - elevatorFloor);
     }
 
     const tempElevator = { id, distance };
@@ -180,9 +188,5 @@ export function selectNextFloor() {
     [next] = queueUp;
   }
   this.next = next;
-  if (!next) {
-    this.dir = 0;
-  } else {
-    this.dir = floor > next ? 1 : 2;
-  }
+  this.dir = !next ? 0 : (floor > next ? 1 : 2);
 }

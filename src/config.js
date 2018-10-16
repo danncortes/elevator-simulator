@@ -10,7 +10,7 @@ export default {
     },
   },
   times: {
-    speedByFloor: 3000,
+    speedByFloor: 2000,
     openCloseDoors: 2000,
     waiting: 3500,
   },

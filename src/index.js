@@ -43,6 +43,7 @@ createBuildingButton.addEventListener('click', (e) => {
   const floorButtons = document.getElementsByClassName('floor-button');
   Array.prototype.forEach.call(floorButtons, (el) => {
     el.addEventListener('click', (ev) => {
+      ev.target.classList.add('active');
       const floor = Number(ev.target.dataset.floor);
       const dir = Number(ev.target.dataset.dir);
 

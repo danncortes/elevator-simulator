@@ -150,6 +150,10 @@ h1 {
   cursor: pointer;
 }
 
+.floor-button.active {
+  background-color: rgb(90, 189, 90);
+}
+
 .floor-button.up span{
   transform: rotate(-90deg);
   left:6px;

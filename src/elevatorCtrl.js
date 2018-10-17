@@ -36,6 +36,13 @@ function removeStatus(container, elevator) {
   }
 }
 
+function desactivateButton(elev) {
+  const { floor } = elev;
+  const dir = elev.queue[2][0] === floor ? 2 : 1;
+  const button = document.querySelectorAll(`[data-floor="${floor}"][data-dir="${dir}"]`)[0];
+  button.classList.remove('active');
+}
+
 export function moveElevator() {
   const elevatorId = this.elevator;
   const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
@@ -47,10 +54,12 @@ export function moveElevator() {
   elevator.style.transitionTimingFunction = 'ease-in-out';
   elevator.style.bottom = `${position}px`;
   setTimeout(() => {
-    removeLog(elevatorId);
+    insertLog(`${arrived}`, elevatorId);
     removeFloorFromQueue.call(this);
-    removeStatus('next-floor', elevatorId);
     insertStatus('current-floor', this.floor, elevatorId);
+    removeStatus('next-floor', elevatorId);
+    removeStatus('queue-up', elevatorId);
+    removeStatus('queue-down', elevatorId);
     runElevator.call(this);
   }, travelTime);
 }

@@ -19,6 +19,6 @@ export default {
     waitingMs: 'Waiting...',
     closingDoors: 'Closing Doors...',
     moving: 'Moving to Floor:',
-    arrived: 'Arrived to Floor:',
+    arrived: 'Arrived!',
   },
 };

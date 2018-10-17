@@ -141,6 +141,7 @@ export function createLogStructure(elevators) {
 export function insertLog(message, elevatorId) {
   const logContainer = document.querySelector(`.log-${elevatorId} .log-content`);
   if (logContainer) {
+    logContainer.innerHTML = '';
     logContainer.insertAdjacentHTML('beforeend', `<p>${message}</p>`);
   }
 }

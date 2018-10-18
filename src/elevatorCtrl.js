@@ -14,14 +14,16 @@ export function removeFloorFromQueue() {
   if (dir === 2) {
     if (queue[dir][0] === next) {
       this.floor = queue[dir].shift();
-    } else {
-      this.floor = queue[1].shift();
+      return 2;
     }
-  } else if (queue[dir][0] === next) {
+    this.floor = queue[1].shift();
+    return 1;
+  } if (queue[dir][0] === next) {
     this.floor = queue[dir].shift();
-  } else {
-    this.floor = queue[2].shift();
+    return 1;
   }
+  this.floor = queue[2].shift();
+  return 2;
 }
 
 function removeLog(elevator) {
@@ -36,9 +38,8 @@ function removeStatus(container, elevator) {
   }
 }
 
-function desactivateButton(elev) {
+function desactivateButton(elev, dir) {
   const { floor } = elev;
-  const dir = elev.queue[2][0] === floor ? 2 : 1;
   const button = document.querySelectorAll(`[data-floor="${floor}"][data-dir="${dir}"]`)[0];
   button.classList.remove('active');
 }
@@ -55,7 +56,8 @@ export function moveElevator() {
   elevator.style.bottom = `${position}px`;
   setTimeout(() => {
     insertLog(`${arrived}`, elevatorId);
-    removeFloorFromQueue.call(this);
+    const dirToRemoveFloor = removeFloorFromQueue.call(this);
+    desactivateButton(this, dirToRemoveFloor);
     insertStatus('current-floor', this.floor, elevatorId);
     removeStatus('next-floor', elevatorId);
     removeStatus('queue-up', elevatorId);

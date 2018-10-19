@@ -26,11 +26,6 @@ export function removeFloorFromQueue() {
   return 2;
 }
 
-function removeLog(elevator) {
-  const logContainer = document.querySelector(`.log-${elevator} .log-content`);
-  logContainer.innerHTML = '';
-}
-
 function removeStatus(container, elevator) {
   const statusCont = document.querySelector(`.log-${elevator} .${container}`);
   if (statusCont) {
@@ -54,16 +49,7 @@ export function moveElevator() {
   elevator.style.transition = `bottom ${travelTime}ms`;
   elevator.style.transitionTimingFunction = 'ease-in-out';
   elevator.style.bottom = `${position}px`;
-  setTimeout(() => {
-    insertLog(`${arrived}`, elevatorId);
-    const dirToRemoveFloor = removeFloorFromQueue.call(this);
-    desactivateButton(this, dirToRemoveFloor);
-    insertStatus('current-floor', this.floor, elevatorId);
-    removeStatus('next-floor', elevatorId);
-    removeStatus('queue-up', elevatorId);
-    removeStatus('queue-down', elevatorId);
-    runElevator.call(this);
-  }, travelTime);
+  return travelTime;
 }
 
 export function runElevator() {
@@ -79,7 +65,17 @@ export function runElevator() {
     setTimeout(() => {
       insertLog(`${closingDoors}`, elevator);
       setTimeout(() => {
-        moveElevator.call(this);
+        const travelTime = moveElevator.call(this);
+        setTimeout(() => {
+          insertLog(`${arrived}`, elevator);
+          const dirToRemoveFloor = removeFloorFromQueue.call(this);
+          desactivateButton(this, dirToRemoveFloor);
+          insertStatus('current-floor', this.floor, elevator);
+          removeStatus('next-floor', elevator);
+          removeStatus('queue-up', elevator);
+          removeStatus('queue-down', elevator);
+          runElevator.call(this);
+        }, travelTime);
       }, openCloseDoors);
     }, waiting);
   }

@@ -20,6 +20,11 @@ export default function configElevators(nElevators, nFloors, runElevator, select
         writable: true,
         enumerable: true,
       },
+      isMoving: {
+        value: true,
+        writable: true,
+        enumerable: true,
+      },
       dir: {
         value: 0,
         writable: true,

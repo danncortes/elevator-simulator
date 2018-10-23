@@ -53,16 +53,17 @@ export function moveElevator() {
 }
 
 export function runElevator() {
-  this.selectNextFloor();
-  const { next, elevator } = this;
-  const queueUp = this.queue[2].length ? this.queue[2] : 'None';
-  const queueDown = this.queue[1].length ? this.queue[1] : 'None';
-  if (next) {
-    insertStatus('next-floor', next, elevator);
+  const { elevator } = this;
+  const queueUp = this.queue[2].length ? this.queue[2] : false;
+  const queueDown = this.queue[1].length ? this.queue[1] : false;
+  if (queueUp || queueDown) {
     insertStatus('queue-up', queueUp, elevator);
     insertStatus('queue-down', queueDown, elevator);
     insertLog(`${waitingMs}`, elevator);
     setTimeout(() => {
+      this.selectNextFloor();
+      const { next } = this;
+      insertStatus('next-floor', next, elevator);
       insertLog(`${closingDoors}`, elevator);
       setTimeout(() => {
         const travelTime = moveElevator.call(this);
@@ -149,11 +150,11 @@ export function asignFloorToElevator(params) {
   const { floor, dir } = params;
   const isTheFloorAlready = this.queue[dir].find(el => el === floor);
   if (!isTheFloorAlready) {
+    console.log(this);
     this.queue[dir].push(floor);
     this.queue[1].sort((a, b) => b - a);
     this.queue[2].sort((a, b) => a - b);
   }
-  console.log(this.queue);
 }
 
 export function selectNextFloor() {
@@ -161,56 +162,22 @@ export function selectNextFloor() {
   const { dir, floor } = this;
   const queueUp = this.queue[2];
   const queueDown = this.queue[1];
-  if (dir === 0) {
-    if (queueUp.length && !queueDown.length) {
-      [next] = queueUp;
-    } else if (!queueUp.length && queueDown.length) {
-      [next] = queueDown;
-    } else {
-      const options = [queueUp[0], queueDown[0]];
-      next = options.reduce((a, b) => (Math.abs(floor - a) < Math.abs(floor - b) ? a : b));
-    }
-  } else if (dir === 2) {
-    if (queueUp.length) {
-      const higherFloor = queueUp.find(el => el > floor);
-      if (higherFloor) {
-        next = higherFloor;
-      } else if (!higherFloor && queueDown.length) {
-        [next] = queueDown;
-      } else {
-        [next] = queueUp;
-      }
-    } else if (queueDown.length) {
-      [next] = queueDown;
-    }
-  } else if (queueDown.length) {
-    const lowerFloor = queueDown.find(el => el < floor);
-    if (lowerFloor) {
-      next = lowerFloor;
-    } else if (!lowerFloor && queueUp.length) {
-      [next] = queueUp;
-    } else {
-      [next] = queueDown;
-    }
-  } else if (queueUp.length) {
+
+  const higherFloor = queueUp.find(el => el > floor);
+  const lowerFloor = queueDown.find(el => el < floor);
+
+  if (queueUp.length && !queueDown.length && !lowerFloor) {
     [next] = queueUp;
+  } else if ((!queueUp.length && queueDown.length) || (queueUp.length && !higherFloor && queueDown.length)) {
+    [next] = queueDown;
+  } else if (dir === 0) {
+    const options = [queueUp[0], queueDown[0]];
+    next = options.reduce((a, b) => (Math.abs(floor - a) < Math.abs(floor - b) ? a : b));
+  } else if (dir === 2 && queueUp.length && higherFloor) {
+    next = higherFloor;
+  } else if (dir === 1 && queueDown.length && lowerFloor) {
+    next = lowerFloor;
   }
-
-  // const higherFloor = queueUp.find(el => el > floor);
-  // const lowerFloor = queueDown.find(el => el < floor);
-
-  // if (queueUp.length && !queueDown.length && !lowerFloor) {
-  //   [next] = queueUp;
-  // } else if ((!queueUp.length && queueDown.length) || (queueUp.length && !higherFloor && queueDown.length)) {
-  //   [next] = queueDown;
-  // } else if (dir === 0) {
-  //   const options = [queueUp[0], queueDown[0]];
-  //   next = options.reduce((a, b) => (Math.abs(floor - a) < Math.abs(floor - b) ? a : b));
-  // } else if (dir === 2 && queueUp.length && higherFloor) {
-  //   next = higherFloor;
-  // } else if (dir === 1 && queueDown.length && lowerFloor) {
-  //   next = lowerFloor;
-  // }
 
   this.next = next;
   this.dir = !next ? 0 : (floor > next ? 1 : 2);

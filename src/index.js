@@ -68,13 +68,14 @@ createBuildingButton.addEventListener('click', (e) => {
   });
 });
 
-const floorButton = document.querySelector('.floor-button');
-if (floorButton) {
-  floorButton.addEventListener('click', () => {
-    if (!elevators[0].queue.length) {
-      elevators[0].queue.push(8);
-      elevators[0].startEngine();
-    }
-    elevators[0].queue.push(8);
-  });
-}
+// const floorButton = document.querySelector('.floor-button');
+// if (floorButton) {
+//   floorButton.addEventListener('click', () => {
+//     if (!elevators[0].queue.length) {
+//       console.log(elevators[0]);
+//       elevators[0].queue.push(8);
+//       elevators[0].startEngine();
+//     }
+//     elevators[0].queue.push(8);
+//   });
+// }

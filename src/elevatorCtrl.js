@@ -153,6 +153,7 @@ export function asignFloorToElevator(params) {
     this.queue[1].sort((a, b) => b - a);
     this.queue[2].sort((a, b) => a - b);
   }
+  console.log(this.queue);
 }
 
 export function selectNextFloor() {
@@ -194,6 +195,25 @@ export function selectNextFloor() {
   } else if (queueUp.length) {
     [next] = queueUp;
   }
+
+  // const higherFloor = queueUp.find(el => el > floor);
+  // const lowerFloor = queueDown.find(el => el < floor);
+
+  // if (queueUp.length && !queueDown.length && !lowerFloor) {
+  //   [next] = queueUp;
+  // } else if ((!queueUp.length && queueDown.length) || (queueUp.length && !higherFloor && queueDown.length)) {
+  //   [next] = queueDown;
+  // } else if (dir === 0) {
+  //   const options = [queueUp[0], queueDown[0]];
+  //   next = options.reduce((a, b) => (Math.abs(floor - a) < Math.abs(floor - b) ? a : b));
+  // } else if (dir === 2 && queueUp.length && higherFloor) {
+  //   next = higherFloor;
+  // } else if (dir === 1 && queueDown.length && lowerFloor) {
+  //   next = lowerFloor;
+  // }
+
   this.next = next;
   this.dir = !next ? 0 : (floor > next ? 1 : 2);
+
+  console.log(`Dir: ${this.dir}, Next: ${this.next}`);
 }

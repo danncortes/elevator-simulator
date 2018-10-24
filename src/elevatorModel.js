@@ -21,7 +21,7 @@ export default function configElevators(nElevators, nFloors, runElevator, select
         enumerable: true,
       },
       isMoving: {
-        value: true,
+        value: false,
         writable: true,
         enumerable: true,
       },

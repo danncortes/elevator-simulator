@@ -67,7 +67,9 @@ export function runElevator() {
       insertLog(`${closingDoors}`, elevator);
       setTimeout(() => {
         const travelTime = moveElevator.call(this);
+        this.isMoving = true;
         setTimeout(() => {
+          this.isMoving = false;
           insertLog(`${arrived}`, elevator);
           const dirToRemoveFloor = removeFloorFromQueue.call(this);
           desactivateButton(this, dirToRemoveFloor);
@@ -148,12 +150,26 @@ export function selectElevator(floorCall, elevators, floors) {
 
 export function asignFloorToElevator(params) {
   const { floor, dir } = params;
+  const { isMoving } = this;
   const isTheFloorAlready = this.queue[dir].find(el => el === floor);
   if (!isTheFloorAlready) {
-    console.log(this);
-    this.queue[dir].push(floor);
-    this.queue[1].sort((a, b) => b - a);
-    this.queue[2].sort((a, b) => a - b);
+    if (isMoving) {
+      const firstQup = this.queue[1].shift();
+      const firstQdown = this.queue[2].shift();
+      this.queue[dir].push(floor);
+      this.queue[1].sort((a, b) => b - a);
+      this.queue[2].sort((a, b) => a - b);
+      if (firstQup) {
+        this.queue[1].unshift(firstQup);
+      }
+      if (firstQdown) {
+        this.queue[2].unshift(firstQdown);
+      }
+    } else {
+      this.queue[dir].push(floor);
+      this.queue[1].sort((a, b) => b - a);
+      this.queue[2].sort((a, b) => a - b);
+    }
   }
 }
 
@@ -181,6 +197,4 @@ export function selectNextFloor() {
 
   this.next = next;
   this.dir = !next ? 0 : (floor > next ? 1 : 2);
-
-  console.log(`Dir: ${this.dir}, Next: ${this.next}`);
 }

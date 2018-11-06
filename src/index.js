@@ -18,54 +18,57 @@ const settingsSection = document.querySelector('.settings');
 const createBuildingButton = document.querySelector('.create-building');
 const inputFloor = document.querySelector('#floors');
 const inputElevators = document.querySelector('#elevators');
+const buildForm = document.querySelector('.initial-setting-form');
 
 // Config Building
 createBuildingButton.addEventListener('click', (e) => {
-  e.preventDefault();
-  const nElevators = Number(inputElevators.value);
-  const nFloors = Number(inputFloor.value);
+  const isValidForm = buildForm.checkValidity();
+  if (isValidForm) {
+    const nElevators = Number(inputElevators.value);
+    const nFloors = Number(inputFloor.value);
 
-  elevators = configElevators(nElevators, nFloors, runElevator, selectNextFloor);
-  // Remove Form
-  settingsSection.parentNode.removeChild(settingsSection);
+    elevators = configElevators(nElevators, nFloors, runElevator, selectNextFloor);
+    // Remove Form
+    settingsSection.parentNode.removeChild(settingsSection);
 
-  // Building Creation
-  mainContainer.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
+    // Building Creation
+    mainContainer.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
 
-  // Log Area creation
-  mainContainer.insertAdjacentHTML('beforeend', logArea);
+    // Log Area creation
+    mainContainer.insertAdjacentHTML('beforeend', logArea);
 
-  const logContainer = document.querySelector('.log-container');
-  if (logContainer) {
-    logContainer.insertAdjacentHTML('beforeend', createLogStructure(elevators));
-  }
+    const logContainer = document.querySelector('.log-container');
+    if (logContainer) {
+      logContainer.insertAdjacentHTML('beforeend', createLogStructure(elevators));
+    }
 
-  const floorButtons = document.getElementsByClassName('floor-button');
-  Array.prototype.forEach.call(floorButtons, (el) => {
-    el.addEventListener('click', (ev) => {
-      ev.target.classList.add('active');
-      const floor = Number(ev.target.dataset.floor);
-      const dir = Number(ev.target.dataset.dir);
+    const floorButtons = document.getElementsByClassName('floor-button');
+    Array.prototype.forEach.call(floorButtons, (el) => {
+      el.addEventListener('click', (ev) => {
+        ev.target.classList.add('active');
+        const floor = Number(ev.target.dataset.floor);
+        const dir = Number(ev.target.dataset.dir);
 
-      const floorCall = { floor, dir };
-      // Select Elevator to asign floor
-      const isCalledAlready = isAlreadyCalled(floorCall, elevators);
-      const isAtTheSameFloor = isAtTheFloor(floorCall, elevators);
+        const floorCall = { floor, dir };
+        // Select Elevator to asign floor
+        const isCalledAlready = isAlreadyCalled(floorCall, elevators);
+        const isAtTheSameFloor = isAtTheFloor(floorCall, elevators);
 
-      if (!isCalledAlready && !isAtTheSameFloor) {
-        const elevatorId = selectElevator(floorCall, elevators, nFloors);
-        // Asign floor to Elevator
-        const elevatorQueue = elevators[elevatorId].queue;
-        if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
-          asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
-          // Run Elevator
-          elevators[elevatorId].startEngine();
-        } else {
-          asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+        if (!isCalledAlready && !isAtTheSameFloor) {
+          const elevatorId = selectElevator(floorCall, elevators, nFloors);
+          // Asign floor to Elevator
+          const elevatorQueue = elevators[elevatorId].queue;
+          if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
+            asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+            // Run Elevator
+            elevators[elevatorId].startEngine();
+          } else {
+            asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+          }
         }
-      }
+      });
     });
-  });
+  }
 });
 
 // const floorButton = document.querySelector('.floor-button');

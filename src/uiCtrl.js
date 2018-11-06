@@ -7,13 +7,31 @@ export const form = (
       <div class="form-group">
         <label>How many Floors</label>
         <div>
-          <input id="floors" type="number" class="form-control" value="4" min="4" max="25" placeholder="Type a Number">
+          <input
+          id="floors"
+          type="number"
+          class="form-control"
+          value="4"
+          min="4"
+          max="80"
+          placeholder="Type a Number"
+          required
+          data-value-missing=”This field is required!”>
         </div>
       </div>
       <div class="form-group">
         <label>How many elevators</label>
         <div>
-          <input id="elevators" type="number" class="form-control" value="1" min="1" max="6" placeholder="Type a Number">
+          <input
+            id="elevators"
+            type="number"
+            class="form-control"
+            value="2"
+            min="2"
+            max="10"
+            placeholder="Type a Number"
+            required
+            data-value-missing=”This field is required!”>
         </div>
       </div>
       <div class="form-group button-cont">

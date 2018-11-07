@@ -45,7 +45,6 @@ createBuildingButton.addEventListener('click', (e) => {
     const floorButtons = document.getElementsByClassName('floor-button');
     Array.prototype.forEach.call(floorButtons, (el) => {
       el.addEventListener('click', (ev) => {
-        ev.target.classList.add('active');
         const floor = Number(ev.target.dataset.floor);
         const dir = Number(ev.target.dataset.dir);
 
@@ -53,8 +52,8 @@ createBuildingButton.addEventListener('click', (e) => {
         // Select Elevator to asign floor
         const isCalledAlready = isAlreadyCalled(floorCall, elevators);
         const isAtTheSameFloor = isAtTheFloor(floorCall, elevators);
-
         if (!isCalledAlready && !isAtTheSameFloor) {
+          ev.target.classList.add('active');
           const elevatorId = selectElevator(floorCall, elevators, nFloors);
           // Asign floor to Elevator
           const elevatorQueue = elevators[elevatorId].queue;
@@ -70,15 +69,3 @@ createBuildingButton.addEventListener('click', (e) => {
     });
   }
 });
-
-// const floorButton = document.querySelector('.floor-button');
-// if (floorButton) {
-//   floorButton.addEventListener('click', () => {
-//     if (!elevators[0].queue.length) {
-//       console.log(elevators[0]);
-//       elevators[0].queue.push(8);
-//       elevators[0].startEngine();
-//     }
-//     elevators[0].queue.push(8);
-//   });
-// }

@@ -18,7 +18,8 @@ export function removeFloorFromQueue() {
     }
     this.floor = queue[1].shift();
     return 1;
-  } if (queue[dir][0] === next) {
+  }
+  if (queue[dir][0] === next) {
     this.floor = queue[dir].shift();
     return 1;
   }
@@ -72,6 +73,7 @@ export function runElevator() {
           this.isMoving = false;
           insertLog(`${arrived}`, elevator);
           const dirToRemoveFloor = removeFloorFromQueue.call(this);
+          this.dir = 0;
           desactivateButton(this, dirToRemoveFloor);
           insertStatus('current-floor', this.floor, elevator);
           removeStatus('next-floor', elevator);
@@ -89,7 +91,8 @@ export function isAlreadyCalled(floorCall, elevators) {
 }
 
 export function isAtTheFloor(floorCall, elevators) {
-  return _.find(_.filter(elevators, elevator => elevator.dir === 0), elev => elev.floor === floorCall.floor);
+  const stopedElevators = _.filter(elevators, elevator => elevator.dir === 0);
+  return _.find(stopedElevators, elev => elev.floor === floorCall.floor);
 }
 
 export function selectElevator(floorCall, elevators, floors) {

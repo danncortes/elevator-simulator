@@ -1,0 +1,228 @@
+body {
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.main-container {
+  min-height: 100vh;
+  width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-container {
+  padding: 80px 0;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+}
+
+.settings {
+  flex-grow: 3
+}
+
+.building-area {
+  min-height: 200px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.initial-setting-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: #ddd;
+
+  .form-group {
+    margin-right: 16px;
+  }
+
+  .form-group.button-cont {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+
+  input {
+    padding: 6px 8px;
+    border-radius: 3px;
+    border: 0;
+    font-size: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  button {
+    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer
+  }
+}
+
+.building-container {
+  display: flex;
+
+  .floor-numbers {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-around;
+    width: 20px;
+
+    .number {
+      width: 100%;
+    }
+  }
+
+  .building {
+    background-color: #ddd;
+    position: relative;
+
+    .floors {
+      position: absolute;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: space-between;
+
+      .floor {
+        height: 8px;
+        width: 100%;
+        align-self: center;
+        background-color: rgba(255, 255, 255, 0.4);
+        z-index: 1;
+      }
+    }
+
+    .elevators-cont {
+      display: flex;
+      margin: 10px 10px 0;
+    }
+
+    .elevator-lane {
+      width: 25px;
+      margin: 10px 14px 0px;
+      background-color: #222;
+      position: relative;
+    }
+
+    .elevator {
+      background-color: rgb(0, 104, 202);
+      position: absolute;
+      bottom: 0;
+    }
+  }
+
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-around;
+    width: 50px;
+    margin-left: 10px;
+
+    .control-floor {
+      display: flex;
+      width: 100%;
+    }
+  }
+}
+
+.floor-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ddd;
+  position: relative;
+  cursor: pointer;
+
+  &.active {
+    background-color: rgb(90, 189, 90);
+  }
+
+  &.up span {
+    transform: rotate(-90deg);
+    left: 6px;
+  }
+
+  &:after {
+    display: block;
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    left: 50%;
+    transform: translateY(-50%) translatex(-50%);
+  }
+}
+
+
+
+
+.floor-button.up:after {
+  border-bottom: 6px solid rgba(255, 255, 255, 0.7);
+  top: 45%;
+}
+
+.floor-button.down:after {
+  border-top: 6px solid rgba(255, 255, 255, 0.7);
+  top: 55%;
+}
+
+.floor-button.down span {
+  transform: rotate(90deg);
+  left: 9px;
+}
+
+.floor-button:first-of-type {
+  margin-right: 4px;
+}
+
+.floor-button span {
+  position: absolute;
+}
+
+.log-area {
+  min-height: 300px;
+}
+
+.log-area .log-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.log-area .log-container .log {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  padding: 5px 10px 8px;
+  width: 200px;
+  border-radius: 1px;
+  margin: 12px 12px 0 0;
+}
+
+.log-area .log-container .log h2 {
+  font-size: 18px;
+  margin-top: 0
+}
+
+.log-area .log-container .log p {
+  margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 14px;
+
+}

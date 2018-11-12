@@ -33,7 +33,7 @@ module.exports = (env, argv) => ({
         },
       },
       {
-        test: /\.css$/,
+        test: /\.(scss|css)$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -43,9 +43,22 @@ module.exports = (env, argv) => ({
             },
           },
           'css-loader',
+          'sass-loader',
         ],
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: false,
+        },
+      },
+    },
   },
   plugins: [
     new CleanWebpackPlugin('dist'),

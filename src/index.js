@@ -1,11 +1,11 @@
-import './style.css';
+import './style.scss';
 import configElevators from './elevatorModel';
 import {
   form,
   buildingStructure,
   logArea,
   createLogStructure,
-} from './uiCtrl';
+} from './ui/uiCtrl';
 import {
   selectElevator,
   asignFloorToElevator,

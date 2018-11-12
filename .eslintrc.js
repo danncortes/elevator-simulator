@@ -30,6 +30,10 @@ module.exports = {
       "error",
       "always"
     ],
+    "no-plusplus": [
+      "error", 
+      { "allowForLoopAfterthoughts": true }
+    ]
   },
   "parser": "babel-eslint",
 };

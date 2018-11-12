@@ -1,45 +1,6 @@
 import _ from 'lodash';
-import config from './config';
-
-export const form = (
-  `<section class="settings">
-    <form class="initial-setting-form">
-      <div class="form-group">
-        <label>How many Floors</label>
-        <div>
-          <input
-          id="floors"
-          type="number"
-          class="form-control"
-          value="4"
-          min="4"
-          max="80"
-          placeholder="Type a Number"
-          required
-          data-value-missing=”This field is required!”>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>How many elevators</label>
-        <div>
-          <input
-            id="elevators"
-            type="number"
-            class="form-control"
-            value="2"
-            min="2"
-            max="10"
-            placeholder="Type a Number"
-            required
-            data-value-missing=”This field is required!”>
-        </div>
-      </div>
-      <div class="form-group button-cont">
-        <button class="create-building">Build it!</button>
-      </div>
-    </form>
-  </section>`
-);
+import config from '../config';
+import formGroup from './formGroup';
 
 function createFloorNumbers(floors) {
   function createNumber(num) {
@@ -95,6 +56,18 @@ function createFloorControl(floors) {
   return controls;
 }
 
+export const form = (
+  `<section class="settings">
+    <form class="initial-setting-form">
+      ${formGroup('How many Floors?', 'floors', 4, 4, 80, 'Type a number', 'This field is required!')}
+      ${formGroup('How many elevators?', 'elevators', 2, 2, 10, 'Type a number', 'This field is required!')}
+      <div class="form-group button-cont">
+        <button class="create-building">Build it!</button>
+      </div>
+    </form>
+  </section>`
+);
+
 export function buildingStructure(floors, elevators) {
   const { floorHeight } = config.building;
   return (
@@ -145,9 +118,7 @@ export function createLogStructure(elevators) {
           </div>
           <div class="log-status">
             <p><strong>Log</strong></p>
-            <div class="log-content">
-
-            </div>
+            <div class="log-content"></div>
           </div>
         </section>
       </div>

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import config from './config';
-import { insertLog, insertStatus } from './uiCtrl';
+import { insertLog, insertStatus } from './ui/uiCtrl';
 
 const {
   messages: {
@@ -90,6 +90,10 @@ export function isAlreadyCalled(floorCall, elevators) {
   return _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
 }
 
+/**
+ * DDetermines if the there is an elevator stopped
+ * in the same floor where the elevator is called from
+*/
 export function isAtTheFloor(floorCall, elevators) {
   const stopedElevators = _.filter(elevators, elevator => elevator.dir === 0);
   return _.find(stopedElevators, elev => elev.floor === floorCall.floor);

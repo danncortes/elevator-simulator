@@ -3,7 +3,7 @@ type FloorCalledFrom = {
   dir: number
 };
 
-type SelectElevator = (floorCalledFrom: FloorCalledFrom, elevators: string[], nFloors: number) => number;
+type SelectElevator = (floorCalledFrom: FloorCalledFrom, elevators: {}, nFloors: number) => number;
 
 type EnvironmentConfig = {
   speed: number,
@@ -28,9 +28,22 @@ type EnvironmentConfig = {
   },
 };
 
+type FormParam = {
+  [key: number]: number
+};
+
+type Queue = {
+  [key: number]: number[]
+};
+
+type Direction = 0 | 1 | 2;
+
 export {
   FloorCalledFrom,
   SelectElevator,
-  EnvironmentConfig
+  EnvironmentConfig,
+  FormParam,
+  Queue,
+  Direction
 };
 

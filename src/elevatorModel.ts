@@ -1,23 +1,52 @@
 import {
   runElevator,
-  selectNextFloor,
 } from './elevatorCtrl';
 
 import floorParameters from './floorParameters';
 
-type Queue = {
-  1: number[],
-  2: number[]
-};
+import {
+  FormParam,
+  Queue,
+  Direction
+} from './types/types';
 
-type Direction = 0 | 1 | 2;
+function selectNextFloor(): void {
+  let next: number;
+  const { direction, currentFloor } = this;
+  const queueUp = this.queue[2];
+  const queueDown = this.queue[1];
+
+  const higherFloor = queueUp.find(el => el > currentFloor);
+  const lowerFloor = queueDown.find(el => el < currentFloor);
+
+  if (queueUp.length && !queueDown.length && !lowerFloor) {
+    [next] = queueUp;
+  } else if ((!queueUp.length && queueDown.length) || (queueUp.length && !higherFloor && queueDown.length)) {
+    [next] = queueDown;
+  } else if (direction === 0) {
+    const options = [queueUp[0], queueDown[0]];
+    next = options.reduce((a, b) => (Math.abs(currentFloor - a) < Math.abs(currentFloor - b) ? a : b));
+  } else if (direction === 2 && queueUp.length && higherFloor) {
+    next = higherFloor;
+  } else if (direction === 1 && queueDown.length && lowerFloor) {
+    next = lowerFloor;
+  }
+
+  this.next = next;
+  this.direction = !next ? 0 : (currentFloor > next ? 1 : 2);
+}
+
+type Elevators = {
+  [key: number]: Elevator
+}
+
 class Elevator {
   id: number;
   currentFloor: number;
   isMoving: boolean;
   direction: Direction;
   queue: Queue;
-  floorParams: {};
+  floorParameters: FormParam;
 
   constructor(
     id: number,
@@ -25,63 +54,28 @@ class Elevator {
     isMoving: boolean,
     direction: Direction,
     queue: Queue,
-    floorParams: {},
+    floorParams: FormParam,
   ) {
     this.id = id;
     this.currentFloor = currentFloor;
     this.isMoving = isMoving;
     this.direction = direction;
     this.queue = queue;
-    this.floorParams = floorParams;
+    this.floorParameters = floorParams;
   }
 
-  startEngine() {
-    return runElevator;
-  }
-
-  selectNextFloor() {
-    return selectNextFloor;
-  }
+  startEngine = runElevator
+  selectNextFloor = selectNextFloor
 }
 
-export default function configElevators(nElevators, nFloors, runElevator, selectNextFloor) {
+function configElevators(nElevators: number, nFloors: number): Elevators {
   const floorParams = floorParameters(nFloors);
-  const engine = {
-    floorParameters: floorParams,
-    startEngine: runElevator,
-    selectNextFloor,
-  };
-  const elevators = {};
+  const elevators: Elevators = {};
   for (let i = 1; i <= nElevators; i++) {
-    const elevator = Object.create(engine, {
-      elevator: {
-        value: i,
-        writable: true,
-        enumerable: true,
-      },
-      floor: {
-        value: 1,
-        writable: true,
-        enumerable: true,
-      },
-      isMoving: {
-        value: false,
-        writable: true,
-        enumerable: true,
-      },
-      dir: {
-        value: 0,
-        writable: true,
-        enumerable: true,
-      },
-      queue: {
-        value: { 2: [], 1: [] },
-        writable: true,
-        enumerable: true,
-      },
-    });
+    const elevator = new Elevator(i, 1, false, 0, { 2: [], 1: [] }, floorParams);
     elevators[i] = elevator;
   }
-  console.log(new Elevator(2, 1, false, 0, { 2: [], 1: [] }, {}))
   return elevators;
 }
+
+export { Elevator, configElevators };

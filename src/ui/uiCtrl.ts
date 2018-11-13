@@ -18,7 +18,7 @@ function createFloors(floors: number): string {
   return floorDivider;
 }
 
-function createElevatorsStructure(elevators, floors: number): string {
+function createElevatorsStructure(elevators: number, floors: number): string {
   let elevatorStructure = '';
   const elevatorLaneHeight = config.building.elevatorLaneHeight(floors);
   const { elevatorWidth, elevatorHeight } = config.building;
@@ -102,11 +102,12 @@ export function createLogStructure(elevators): string {
     const next = elev.next ? elev.next : 'None';
     const queueUp = elev.queue[2].length ? elev.queue[2] : 'None';
     const queueDown = elev.queue[1].length ? elev.queue[1] : 'None';
+    const { id, currentFloor } = elev;
     logStructure += `
-      <div class="log log-${elev.elevator}">
-        <h2>Elevator ${elev.elevator}</h2>
+      <div class="log log-${id}">
+        <h2>Elevator ${id}</h2>
         <section class="status-area">
-          <p><strong>Current floor:</strong><span class="current-floor"> ${elev.floor}</span></p>
+          <p><strong>Current floor:</strong><span class="current-floor"> ${currentFloor}</span></p>
           <p><strong>Next:</strong><span class="next-floor"> ${next}</span></p>
           <div>
             <p><strong>Queue</strong></p>

@@ -1,5 +1,5 @@
 import './style.scss';
-import configElevators from './elevatorModel';
+import { configElevators } from './elevatorModel';
 import {
   form,
   buildingStructure,
@@ -10,7 +10,6 @@ import {
   selectElevator,
   asignFloorToElevator,
   runElevator,
-  selectNextFloor,
   isAlreadyCalled,
   isAtTheFloor,
 } from './elevatorCtrl';
@@ -20,7 +19,7 @@ import {
   SelectElevator
 } from './types/types';
 
-let elevators: [];
+let elevators: {};
 
 const mainContainer: Element = document.querySelector('.main-container');
 
@@ -29,9 +28,9 @@ mainContainer.insertAdjacentHTML('beforeend', form);
 
 const settingsSection: Element = document.querySelector('.settings');
 const createBuildingButton: Element = document.querySelector('.create-building');
-const inputFloor: Element = document.querySelector('#floors');
-const inputElevators: Element = document.querySelector('#elevators');
-const buildForm: Element = document.querySelector('.initial-setting-form');
+const inputFloor: HTMLFormElement = document.querySelector('#floors');
+const inputElevators: HTMLFormElement = document.querySelector('#elevators');
+const buildForm: HTMLFormElement = document.querySelector('.initial-setting-form');
 
 // Config Building
 createBuildingButton.addEventListener('click', (e) => {
@@ -40,8 +39,7 @@ createBuildingButton.addEventListener('click', (e) => {
     const nElevators: number = Number(inputElevators.value);
     const nFloors: number = Number(inputFloor.value);
 
-    elevators = configElevators(nElevators, nFloors, runElevator, selectNextFloor);
-    console.log(elevators)
+    elevators = configElevators(nElevators, nFloors);
     // Remove Form
     settingsSection.parentNode.removeChild(settingsSection);
 

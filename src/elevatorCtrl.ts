@@ -15,20 +15,20 @@ const {
 } = config;
 
 export function removeFloorFromQueue(): number {
-  const { dir, queue, next } = this;
-  if (dir === 2) {
-    if (queue[dir][0] === next) {
-      this.floor = queue[dir].shift();
+  const { direction, queue, next } = this;
+  if (direction === 2) {
+    if (queue[direction][0] === next) {
+      this.currentFloor = queue[direction].shift();
       return 2;
     }
-    this.floor = queue[1].shift();
+    this.currentFloor = queue[1].shift();
     return 1;
   }
-  if (queue[dir][0] === next) {
-    this.floor = queue[dir].shift();
+  if (queue[direction][0] === next) {
+    this.currentFloor = queue[direction].shift();
     return 1;
   }
-  this.floor = queue[2].shift();
+  this.currentFloor = queue[2].shift();
   return 2;
 }
 
@@ -40,50 +40,52 @@ function removeStatus(container: string, elevator: number): void {
 }
 
 function desactivateButton(elev, dir: number): void {
-  const { floor } = elev;
-  const button = document.querySelectorAll(`[data-floor="${floor}"][data-dir="${dir}"]`)[0];
+  const { currentFloor } = elev;
+  const button = document.querySelectorAll(`[data-floor="${currentFloor}"][data-dir="${dir}"]`)[0];
   button.classList.remove('active');
 }
 
 export function moveElevator(): number {
-  const elevatorId = this.elevator;
-  const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
-  const position = this.floorParameters[this.next];
-  const floorDiff = Math.abs(this.floor - this.next);
+  const elevatorId = this.id;
+  const { next, currentFloor } = this;
+
+  const elevatorElement = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
+  const position = this.floorParameters[next];
+  const floorDiff = Math.abs(currentFloor - next);
   const travelTime = config.times.speedByFloor * floorDiff;
   insertLog('Moving...', elevatorId);
-  elevator.style.transition = `bottom ${travelTime}ms`;
-  elevator.style.transitionTimingFunction = 'ease-in-out';
-  elevator.style.bottom = `${position}px`;
+  elevatorElement.style.transition = `bottom ${travelTime}ms`;
+  elevatorElement.style.transitionTimingFunction = 'ease-in-out';
+  elevatorElement.style.bottom = `${position}px`;
   return travelTime;
 }
 
 export function runElevator(): void {
-  const { elevator } = this;
+  const elevatorId = this.id;
   const queueUp = this.queue[2].length ? this.queue[2] : false;
   const queueDown = this.queue[1].length ? this.queue[1] : false;
   if (queueUp || queueDown) {
-    insertStatus('queue-up', queueUp, elevator);
-    insertStatus('queue-down', queueDown, elevator);
-    insertLog(`${waitingMs}`, elevator);
+    insertStatus('queue-up', queueUp, elevatorId);
+    insertStatus('queue-down', queueDown, elevatorId);
+    insertLog(`${waitingMs}`, elevatorId);
     setTimeout(() => {
       this.selectNextFloor();
       const { next } = this;
-      insertStatus('next-floor', next, elevator);
-      insertLog(`${closingDoors}`, elevator);
+      insertStatus('next-floor', next, elevatorId);
+      insertLog(`${closingDoors}`, elevatorId);
       setTimeout(() => {
         const travelTime = moveElevator.call(this);
         this.isMoving = true;
         setTimeout(() => {
           this.isMoving = false;
-          insertLog(`${arrived}`, elevator);
+          insertLog(`${arrived}`, elevatorId);
           const dirToRemoveFloor = removeFloorFromQueue.call(this);
-          this.dir = 0;
+          this.direction = 0;
           desactivateButton(this, dirToRemoveFloor);
-          insertStatus('current-floor', this.floor, elevator);
-          removeStatus('next-floor', elevator);
-          removeStatus('queue-up', elevator);
-          removeStatus('queue-down', elevator);
+          insertStatus('current-floor', this.currentFloor, elevatorId);
+          removeStatus('next-floor', elevatorId);
+          removeStatus('queue-up', elevatorId);
+          removeStatus('queue-down', elevatorId);
           runElevator.call(this);
         }, travelTime);
       }, openCloseDoors);
@@ -91,7 +93,7 @@ export function runElevator(): void {
   }
 }
 
-export function isAlreadyCalled(floorCall: FloorCalledFrom, elevators): boolean {
+export function isAlreadyCalled(floorCall: FloorCalledFrom, elevators: {}): boolean {
   const elevatorAsigned: Element = _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
   return (!!elevatorAsigned && true);
 }
@@ -100,9 +102,9 @@ export function isAlreadyCalled(floorCall: FloorCalledFrom, elevators): boolean 
  * Determines if the there is an elevator stopped
  * in the same floor where the elevator is called from
 */
-export function isAtTheFloor(floorCall: FloorCalledFrom, elevators): boolean {
-  const stoppedElevators = _.filter(elevators, elevator => elevator.dir === 0);
-  const stoppedElevSameFloor = _.find(stoppedElevators, elev => elev.floor === floorCall.floor);
+export function isAtTheFloor(floorCall: FloorCalledFrom, elevators: {}): boolean {
+  const stoppedElevators = _.filter(elevators, elevator => elevator.direction === 0);
+  const stoppedElevSameFloor = _.find(stoppedElevators, elev => elev.currentFloor === floorCall.floor);
   return (!!stoppedElevSameFloor && true);
 }
 
@@ -121,35 +123,34 @@ export const selectElevator: SelectElevator = (floorCall, elevators, floors) => 
   let distance = 0;
 
   _.forEach(elevators, (elevator, key) => {
-    const elevatorFloor = elevator.floor;
-    const { dir } = elevator;
+    const { currentFloor, direction } = elevator;
     const id = key;
 
     if (dirCall === 2) {
       // Called to Go up
-      if (dir === 1) {
-        distance = (floorCall.floor - 1) + (elevatorFloor - 1);
-      } else if (dir === 2) {
-        if (elevatorFloor < floorCall.floor) {
-          distance = floorCall.floor - elevatorFloor;
+      if (direction === 1) {
+        distance = (floorCall.floor - 1) + (currentFloor - 1);
+      } else if (direction === 2) {
+        if (currentFloor < floorCall.floor) {
+          distance = floorCall.floor - currentFloor;
         } else {
-          distance = floors - elevatorFloor - 1 + floors + floorCall.floor - 1;
+          distance = floors - currentFloor - 1 + floors + floorCall.floor - 1;
         }
       }
     } else if (dirCall === 1) {
-      if (dir === 2) { // Elevator going Up
-        distance = (floors - elevatorFloor) + (floors - floorCall.floor);
-      } else if (dir === 1) { // Elevator going Down
-        if (elevatorFloor > floorCall.floor) {
-          distance = elevatorFloor - floorCall.floor;
+      if (direction === 2) { // Elevator going Up
+        distance = (floors - currentFloor) + (floors - floorCall.floor);
+      } else if (direction === 1) { // Elevator going Down
+        if (currentFloor > floorCall.floor) {
+          distance = currentFloor - floorCall.floor;
         } else {
-          distance = floors - 1 + floorCall.floor - 1 + elevatorFloor - 1;
+          distance = floors - 1 + floorCall.floor - 1 + currentFloor - 1;
         }
       }
     }
 
-    if (dir === 0 && (dirCall === 1 || dirCall === 2)) {
-      distance = Math.abs(floorCall.floor - elevatorFloor);
+    if (direction === 0 && (dirCall === 1 || dirCall === 2)) {
+      distance = Math.abs(floorCall.floor - currentFloor);
     }
 
     const tempElevator = { id, distance };
@@ -185,30 +186,4 @@ export function asignFloorToElevator(params: FloorCalledFrom): void {
       this.queue[2].sort((a, b) => a - b);
     }
   }
-}
-
-export function selectNextFloor(): void {
-  let next;
-  const { dir, floor } = this;
-  const queueUp = this.queue[2];
-  const queueDown = this.queue[1];
-
-  const higherFloor = queueUp.find(el => el > floor);
-  const lowerFloor = queueDown.find(el => el < floor);
-
-  if (queueUp.length && !queueDown.length && !lowerFloor) {
-    [next] = queueUp;
-  } else if ((!queueUp.length && queueDown.length) || (queueUp.length && !higherFloor && queueDown.length)) {
-    [next] = queueDown;
-  } else if (dir === 0) {
-    const options = [queueUp[0], queueDown[0]];
-    next = options.reduce((a, b) => (Math.abs(floor - a) < Math.abs(floor - b) ? a : b));
-  } else if (dir === 2 && queueUp.length && higherFloor) {
-    next = higherFloor;
-  } else if (dir === 1 && queueDown.length && lowerFloor) {
-    next = lowerFloor;
-  }
-
-  this.next = next;
-  this.dir = !next ? 0 : (floor > next ? 1 : 2);
 }

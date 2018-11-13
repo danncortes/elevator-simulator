@@ -14,7 +14,7 @@ function plugins(argv) {
 }
 
 module.exports = (env, argv) => ({
-  entry: { bundle: './src/index.js' },
+  entry: { bundle: './src/index.ts' },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
@@ -23,10 +23,13 @@ module.exports = (env, argv) => ({
   devServer: {
     open: true,
   },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

@@ -2,6 +2,11 @@ import _ from 'lodash';
 import config from './config';
 import { insertLog, insertStatus } from './ui/uiCtrl';
 
+import {
+  SelectElevator,
+  FloorCalledFrom
+} from './types/types';
+
 const {
   messages: {
     nextFloors, closingDoors, waitingMs, arrived, moving,
@@ -9,7 +14,7 @@ const {
   times: { openCloseDoors, waiting },
 } = config;
 
-export function removeFloorFromQueue() {
+export function removeFloorFromQueue(): number {
   const { dir, queue, next } = this;
   if (dir === 2) {
     if (queue[dir][0] === next) {
@@ -27,20 +32,20 @@ export function removeFloorFromQueue() {
   return 2;
 }
 
-function removeStatus(container, elevator) {
+function removeStatus(container: string, elevator: number): void {
   const statusCont = document.querySelector(`.log-${elevator} .${container}`);
   if (statusCont) {
     statusCont.innerHTML = '';
   }
 }
 
-function desactivateButton(elev, dir) {
+function desactivateButton(elev, dir: number): void {
   const { floor } = elev;
   const button = document.querySelectorAll(`[data-floor="${floor}"][data-dir="${dir}"]`)[0];
   button.classList.remove('active');
 }
 
-export function moveElevator() {
+export function moveElevator(): number {
   const elevatorId = this.elevator;
   const elevator = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
   const position = this.floorParameters[this.next];
@@ -53,7 +58,7 @@ export function moveElevator() {
   return travelTime;
 }
 
-export function runElevator() {
+export function runElevator(): void {
   const { elevator } = this;
   const queueUp = this.queue[2].length ? this.queue[2] : false;
   const queueDown = this.queue[1].length ? this.queue[1] : false;
@@ -86,20 +91,22 @@ export function runElevator() {
   }
 }
 
-export function isAlreadyCalled(floorCall, elevators) {
-  return _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
+export function isAlreadyCalled(floorCall: FloorCalledFrom, elevators): boolean {
+  const elevatorAsigned: Element = _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
+  return (!!elevatorAsigned && true);
 }
 
 /**
- * DDetermines if the there is an elevator stopped
+ * Determines if the there is an elevator stopped
  * in the same floor where the elevator is called from
 */
-export function isAtTheFloor(floorCall, elevators) {
-  const stopedElevators = _.filter(elevators, elevator => elevator.dir === 0);
-  return _.find(stopedElevators, elev => elev.floor === floorCall.floor);
+export function isAtTheFloor(floorCall: FloorCalledFrom, elevators): boolean {
+  const stoppedElevators = _.filter(elevators, elevator => elevator.dir === 0);
+  const stoppedElevSameFloor = _.find(stoppedElevators, elev => elev.floor === floorCall.floor);
+  return (!!stoppedElevSameFloor && true);
 }
 
-export function selectElevator(floorCall, elevators, floors) {
+export const selectElevator: SelectElevator = (floorCall, elevators, floors) => {
   const stoppedElevators = {};
   _.forEach(elevators, (el, key) => {
     if (el.dir === 0) {
@@ -155,7 +162,7 @@ export function selectElevator(floorCall, elevators, floors) {
   return closestElevator.id;
 }
 
-export function asignFloorToElevator(params) {
+export function asignFloorToElevator(params: FloorCalledFrom): void {
   const { floor, dir } = params;
   const { isMoving } = this;
   const isTheFloorAlready = this.queue[dir].find(el => el === floor);
@@ -180,7 +187,7 @@ export function asignFloorToElevator(params) {
   }
 }
 
-export function selectNextFloor() {
+export function selectNextFloor(): void {
   let next;
   const { dir, floor } = this;
   const queueUp = this.queue[2];

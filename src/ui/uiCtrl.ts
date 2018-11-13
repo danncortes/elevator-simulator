@@ -2,26 +2,23 @@ import _ from 'lodash';
 import config from '../config';
 import formGroup from './formGroup';
 
-function createFloorNumbers(floors) {
-  function createNumber(num) {
-    return `<div class="number">${num}</div>`;
-  }
-  let floorsStructure = '';
+function createFloorNumbers(floors: number): string {
+  let floorsStructure: string = '';
   for (let i = floors; i >= 1; i--) {
-    floorsStructure += createNumber(i);
+    floorsStructure += `<div class="number">${i}</div>`;
   }
   return floorsStructure;
 }
 
-function createFloors(floors) {
-  let floorDivider = '';
+function createFloors(floors: number): string {
+  let floorDivider: string = '';
   for (let i = 2; i <= floors; i++) {
     floorDivider += '<div class="floor"></div>';
   }
   return floorDivider;
 }
 
-function createElevatorsStructure(elevators, floors) {
+function createElevatorsStructure(elevators, floors: number): string {
   let elevatorStructure = '';
   const elevatorLaneHeight = config.building.elevatorLaneHeight(floors);
   const { elevatorWidth, elevatorHeight } = config.building;
@@ -35,7 +32,7 @@ function createElevatorsStructure(elevators, floors) {
   return elevatorStructure;
 }
 
-function insertControls(floor, floors) {
+function insertControls(floor: number, floors: number): string {
   const buttonUp = `<div class="floor-button up" data-dir="2" data-floor="${floor}"></div>`;
   const buttonDown = `<div class="floor-button down" data-dir="1" data-floor="${floor}"></div>`;
 
@@ -48,7 +45,7 @@ function insertControls(floor, floors) {
   return buttonUp + buttonDown;
 }
 
-function createFloorControl(floors) {
+function createFloorControl(floors: number): string {
   let controls = '';
   for (let i = floors; i >= 1; i--) {
     controls += `<div class="control-floor">${insertControls(i, floors)}</div>`;
@@ -56,7 +53,7 @@ function createFloorControl(floors) {
   return controls;
 }
 
-export const form = (
+export const form: string = (
   `<section class="settings">
     <form class="initial-setting-form">
       ${formGroup('How many Floors?', 'floors', 4, 4, 80, 'Type a number', 'This field is required!')}
@@ -68,7 +65,7 @@ export const form = (
   </section>`
 );
 
-export function buildingStructure(floors, elevators) {
+export function buildingStructure(floors: number, elevators: number): string {
   const { floorHeight } = config.building;
   return (
     `<section class="building-area">
@@ -92,14 +89,14 @@ export function buildingStructure(floors, elevators) {
   );
 }
 
-export const logArea = (
+export const logArea: string = (
   `<section class="log-area">
     <div class="log-container">
     </div>
   </section>`
 );
 
-export function createLogStructure(elevators) {
+export function createLogStructure(elevators): string {
   let logStructure = '';
   _.forEach(elevators, (elev) => {
     const next = elev.next ? elev.next : 'None';
@@ -127,7 +124,7 @@ export function createLogStructure(elevators) {
   return logStructure;
 }
 
-export function insertLog(message, elevatorId) {
+export function insertLog(message: string, elevatorId: number): void {
   const logContainer = document.querySelector(`.log-${elevatorId} .log-content`);
   if (logContainer) {
     logContainer.innerHTML = '';
@@ -135,7 +132,7 @@ export function insertLog(message, elevatorId) {
   }
 }
 
-export function insertStatus(elem, message, elevatorId) {
+export function insertStatus(elem: string, message: string, elevatorId: number): void {
   const statusCont = document.querySelector(`.log-${elevatorId} .${elem}`);
   if (statusCont) {
     statusCont.innerHTML = '';

@@ -15,25 +15,30 @@ import {
   isAtTheFloor,
 } from './elevatorCtrl';
 
-let elevators = [];
+import {
+  FloorCalledFrom,
+  SelectElevator
+} from './types/types';
 
-const mainContainer = document.querySelector('.main-container');
+let elevators: [];
+
+const mainContainer: Element = document.querySelector('.main-container');
 
 // Create Form
 mainContainer.insertAdjacentHTML('beforeend', form);
 
-const settingsSection = document.querySelector('.settings');
-const createBuildingButton = document.querySelector('.create-building');
-const inputFloor = document.querySelector('#floors');
-const inputElevators = document.querySelector('#elevators');
-const buildForm = document.querySelector('.initial-setting-form');
+const settingsSection: Element = document.querySelector('.settings');
+const createBuildingButton: Element = document.querySelector('.create-building');
+const inputFloor: Element = document.querySelector('#floors');
+const inputElevators: Element = document.querySelector('#elevators');
+const buildForm: Element = document.querySelector('.initial-setting-form');
 
 // Config Building
 createBuildingButton.addEventListener('click', (e) => {
-  const isValidForm = buildForm.checkValidity();
+  const isValidForm: boolean = buildForm.checkValidity();
   if (isValidForm) {
-    const nElevators = Number(inputElevators.value);
-    const nFloors = Number(inputFloor.value);
+    const nElevators: number = Number(inputElevators.value);
+    const nFloors: number = Number(inputFloor.value);
 
     elevators = configElevators(nElevators, nFloors, runElevator, selectNextFloor);
     // Remove Form
@@ -45,32 +50,36 @@ createBuildingButton.addEventListener('click', (e) => {
     // Log Area creation
     mainContainer.insertAdjacentHTML('beforeend', logArea);
 
-    const logContainer = document.querySelector('.log-container');
+    const logContainer: Element = document.querySelector('.log-container');
     if (logContainer) {
       logContainer.insertAdjacentHTML('beforeend', createLogStructure(elevators));
     }
-
+    /** Getting all the buttons by floor */
     const floorButtons = document.getElementsByClassName('floor-button');
-    Array.prototype.forEach.call(floorButtons, (el) => {
-      el.addEventListener('click', (ev) => {
-        const floor = Number(ev.target.dataset.floor);
-        const dir = Number(ev.target.dataset.dir);
 
-        const calledFromFloor = { floor, dir };
+    Array.prototype.forEach.call(floorButtons, (el) => {
+
+      el.addEventListener('click', (ev) => {
+
+        const floor: number = Number(ev.target.dataset.floor);
+        const dir: number = Number(ev.target.dataset.dir);
+
+        const calledFromFloor: FloorCalledFrom = { floor, dir };
         // Select Elevator to asign floor
-        const isCalledAlready = isAlreadyCalled(calledFromFloor, elevators);
-        const isAtTheSameFloor = isAtTheFloor(calledFromFloor, elevators);
+        const isCalledAlready: boolean = isAlreadyCalled(calledFromFloor, elevators);
+        const isAtTheSameFloor: boolean = isAtTheFloor(calledFromFloor, elevators);
+
         if (!isCalledAlready && !isAtTheSameFloor) {
           ev.target.classList.add('active');
-          const elevatorId = selectElevator(calledFromFloor, elevators, nFloors);
+          const elevatorId: number = selectElevator(calledFromFloor, elevators, nFloors);
           // Asign floor to Elevator
           const elevatorQueue = elevators[elevatorId].queue;
           if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
-            asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+            asignFloorToElevator.call(elevators[elevatorId], calledFromFloor);
             // Run Elevator
             elevators[elevatorId].startEngine();
           } else {
-            asignFloorToElevator.call(elevators[elevatorId], { floor, dir });
+            asignFloorToElevator.call(elevators[elevatorId], calledFromFloor);
           }
         }
       });

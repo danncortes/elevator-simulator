@@ -1,4 +1,11 @@
-export default function formGroup(label, id, value, min, max, placeHolder, errorMessage) {
+export default function formGroup(
+  label: string,
+  id: string,
+  value: number,
+  min: number,
+  max: number,
+  placeHolder: string,
+  errorMessage: string): string {
   return `<div class="form-group">
     <label>${label}</label>
     <div>

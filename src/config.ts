@@ -1,4 +1,6 @@
-export default {
+import { EnvironmentConfig } from './types/types';
+
+const environmentConfig: EnvironmentConfig = {
   speed: 1,
   building: {
     floorHeight: 34,
@@ -22,3 +24,5 @@ export default {
     arrived: 'Arrived!',
   },
 };
+
+export default environmentConfig;

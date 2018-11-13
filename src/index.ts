@@ -41,6 +41,7 @@ createBuildingButton.addEventListener('click', (e) => {
     const nFloors: number = Number(inputFloor.value);
 
     elevators = configElevators(nElevators, nFloors, runElevator, selectNextFloor);
+    console.log(elevators)
     // Remove Form
     settingsSection.parentNode.removeChild(settingsSection);
 

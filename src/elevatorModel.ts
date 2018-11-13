@@ -1,4 +1,48 @@
+import {
+  runElevator,
+  selectNextFloor,
+} from './elevatorCtrl';
+
 import floorParameters from './floorParameters';
+
+type Queue = {
+  1: number[],
+  2: number[]
+};
+
+type Direction = 0 | 1 | 2;
+class Elevator {
+  id: number;
+  currentFloor: number;
+  isMoving: boolean;
+  direction: Direction;
+  queue: Queue;
+  floorParams: {};
+
+  constructor(
+    id: number,
+    currentFloor: number,
+    isMoving: boolean,
+    direction: Direction,
+    queue: Queue,
+    floorParams: {},
+  ) {
+    this.id = id;
+    this.currentFloor = currentFloor;
+    this.isMoving = isMoving;
+    this.direction = direction;
+    this.queue = queue;
+    this.floorParams = floorParams;
+  }
+
+  startEngine() {
+    return runElevator;
+  }
+
+  selectNextFloor() {
+    return selectNextFloor;
+  }
+}
 
 export default function configElevators(nElevators, nFloors, runElevator, selectNextFloor) {
   const floorParams = floorParameters(nFloors);
@@ -38,5 +82,6 @@ export default function configElevators(nElevators, nFloors, runElevator, select
     });
     elevators[i] = elevator;
   }
+  console.log(new Elevator(2, 1, false, 0, { 2: [], 1: [] }, {}))
   return elevators;
 }

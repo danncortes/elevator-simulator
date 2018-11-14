@@ -2,6 +2,12 @@ import _ from 'lodash';
 import config from '../config';
 import formGroup from './formGroup';
 
+export const resetButton = (`
+  <div class="reset-bnt-container">
+    <button class="reset-button">Reset</button>
+  </div>
+`)
+
 function createFloorNumbers(floors: number): string {
   let floorsStructure: string = '';
   for (let i = floors; i >= 1; i--) {

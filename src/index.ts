@@ -5,6 +5,7 @@ import {
   buildingStructure,
   logArea,
   createLogStructure,
+  resetButton
 } from './ui/uiCtrl';
 import {
   selectElevator,
@@ -43,11 +44,21 @@ createBuildingButton.addEventListener('click', (e) => {
     // Remove Form
     settingsSection.parentNode.removeChild(settingsSection);
 
+    mainContainer.insertAdjacentHTML('beforeend', resetButton);
+    const resetBtn = document.querySelector('.reset-button');
+
     // Building Creation
     mainContainer.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
 
     // Log Area creation
     mainContainer.insertAdjacentHTML('beforeend', logArea);
+
+    const buildingAreaToRemove = document.querySelector('.building-area');
+    const logAreaToRemove = document.querySelector('.log-area');
+
+    resetBtn.addEventListener('click', (e) => {
+      location.reload();
+    })
 
     const logContainer: Element = document.querySelector('.log-container');
     if (logContainer) {

@@ -49,7 +49,7 @@ export function moveElevator(): number {
   const elevatorId = this.id;
   const { next, currentFloor } = this;
 
-  const elevatorElement = document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
+  const elevatorElement = <HTMLElement>document.querySelectorAll(`[data-elevator="${elevatorId}"]`)[0];
   const position = this.floorParameters[next];
   const floorDiff = Math.abs(currentFloor - next);
   const travelTime = config.times.speedByFloor * floorDiff;

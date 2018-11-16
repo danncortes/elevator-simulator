@@ -5,7 +5,8 @@ import {
   buildingStructure,
   logArea,
   createLogStructure,
-  resetButton
+  resetButton,
+  systemStructure
 } from './ui/uiCtrl';
 
 import {
@@ -48,15 +49,16 @@ export function createBuilding(mainContainer) {
         settingsSection.parentNode.removeChild(settingsSection);
 
         //Create system container
-        mainContainer.insertAdjacentHTML('beforeend', '<section class="system-container"></section>');
+        mainContainer.insertAdjacentHTML('beforeend', systemStructure);
         const systemContainer = document.querySelector('.system-container');
+        const buildingArea = document.querySelector('.building-area');
 
         //Insert reset Button
         systemContainer.insertAdjacentHTML('beforeend', resetButton);
         resetBtn = document.querySelector('.reset-button');
 
         // Building Creation
-        systemContainer.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
+        buildingArea.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
 
         // Log Area creation
         systemContainer.insertAdjacentHTML('beforeend', logArea);

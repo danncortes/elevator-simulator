@@ -71,27 +71,34 @@ export const form: string = (
   </section>`
 );
 
+export const systemStructure = (
+  `<section class="system-container">
+    <section class="log-area2">
+    </section>
+    <section class="building-area">
+    </section>
+  </section>`
+)
+
 export function buildingStructure(floors: number, elevators: number): string {
   const { floorHeight } = config.building;
   return (
-    `<section class="building-area">
-      <div class="building-container">
-        <div class="floor-numbers">
-          ${createFloorNumbers(floors)}
+    `<div class="building-container">
+      <div class="floor-numbers">
+        ${createFloorNumbers(floors)}
+      </div>
+      <div class="building">
+        <div class="floors" style="bottom:${floorHeight}px; top:${20 + floorHeight}px;">
+          ${createFloors(floors)}
         </div>
-        <div class="building">
-          <div class="floors" style="bottom:${floorHeight}px; top:${20 + floorHeight}px;">
-            ${createFloors(floors)}
-          </div>
-          <div class="elevators-cont">
-            ${createElevatorsStructure(elevators, floors)}
-          </div>
-        </div>
-        <div class="controls">
-          ${createFloorControl(floors)}
+        <div class="elevators-cont">
+          ${createElevatorsStructure(elevators, floors)}
         </div>
       </div>
-    </section>`
+      <div class="controls">
+        ${createFloorControl(floors)}
+      </div>
+    </div>`
   );
 }
 

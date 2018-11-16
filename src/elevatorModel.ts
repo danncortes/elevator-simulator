@@ -41,28 +41,14 @@ type Elevators = {
 }
 
 class Elevator {
-  id: number;
-  currentFloor: number;
-  isMoving: boolean;
-  direction: Direction;
-  queue: Queue;
-  floorParameters: FormParam;
-
   constructor(
-    id: number,
-    currentFloor: number,
-    isMoving: boolean,
-    direction: Direction,
-    queue: Queue,
-    floorParams: FormParam,
-  ) {
-    this.id = id;
-    this.currentFloor = currentFloor;
-    this.isMoving = isMoving;
-    this.direction = direction;
-    this.queue = queue;
-    this.floorParameters = floorParams;
-  }
+    public id: number,
+    public currentFloor: number,
+    public isMoving: boolean,
+    public direction: Direction,
+    public queue: Queue,
+    public floorParameters: FormParam,
+  ) { }
 
   startEngine = runElevator
   selectNextFloor = selectNextFloor

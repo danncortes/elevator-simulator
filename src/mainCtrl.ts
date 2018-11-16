@@ -17,7 +17,6 @@ import {
 
 import {
   FloorCalledFrom,
-  SelectElevator
 } from './types/types';
 
 export function buildForm(mainContainer: Element): void {

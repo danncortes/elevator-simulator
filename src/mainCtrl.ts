@@ -4,10 +4,11 @@ import {
   form,
   buildingStructure,
   logArea,
-  createLogStructure,
   resetButton,
   systemStructure
 } from './ui/uiCtrl';
+
+import { createLogStructure } from './logCtrl';
 
 import {
   selectElevator,
@@ -54,19 +55,16 @@ export function createBuilding(mainContainer) {
         const buildingArea = document.querySelector('.building-area');
 
         //Insert reset Button
-        systemContainer.insertAdjacentHTML('beforeend', resetButton);
+        systemContainer.insertAdjacentHTML('afterbegin', resetButton);
         resetBtn = document.querySelector('.reset-button');
 
         // Building Creation
         buildingArea.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
 
         // Log Area creation
-        systemContainer.insertAdjacentHTML('beforeend', logArea);
-
         const logContainer: Element = document.querySelector('.log-container');
-        if (logContainer) {
-          logContainer.insertAdjacentHTML('beforeend', createLogStructure(elevators));
-        }
+        logContainer.insertAdjacentHTML('beforeend', createLogStructure(elevators));
+
         // Getting all the buttons by floor
         const floorButtons = document.getElementsByClassName('floor-button');
 

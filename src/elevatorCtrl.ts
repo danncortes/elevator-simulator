@@ -1,11 +1,14 @@
 import _ from 'lodash';
 import config from './config';
-import { insertLog, insertStatus } from './ui/uiCtrl';
 
 import {
   SelectElevator,
   FloorCalledFrom
 } from './types/types';
+
+import {
+  setLog
+} from './logCtrl';
 
 const {
   messages: {
@@ -32,13 +35,6 @@ export function removeFloorFromQueue(): number {
   return 2;
 }
 
-function removeStatus(container: string, elevator: number): void {
-  const statusCont = document.querySelector(`.log-${elevator} .${container}`);
-  if (statusCont) {
-    statusCont.innerHTML = '';
-  }
-}
-
 function desactivateButton(elev, dir: number): void {
   const { currentFloor } = elev;
   const button = document.querySelectorAll(`[data-floor="${currentFloor}"][data-dir="${dir}"]`)[0];
@@ -53,7 +49,6 @@ export function moveElevator(): number {
   const position = this.floorParameters[next];
   const floorDiff = Math.abs(currentFloor - next);
   const travelTime = config.times.speedByFloor * floorDiff;
-  insertLog('Moving...', elevatorId);
   elevatorElement.style.transition = `bottom ${travelTime}ms`;
   elevatorElement.style.transitionTimingFunction = 'ease-in-out';
   elevatorElement.style.bottom = `${position}px`;
@@ -61,35 +56,29 @@ export function moveElevator(): number {
 }
 
 export function runElevator(): void {
-  const elevatorId = this.id;
   const queueUp = this.queue[2].length ? this.queue[2] : false;
   const queueDown = this.queue[1].length ? this.queue[1] : false;
   if (queueUp || queueDown) {
-    insertStatus('queue-up', queueUp, elevatorId);
-    insertStatus('queue-down', queueDown, elevatorId);
-    insertLog(`${waitingMs}`, elevatorId);
+    setLog(this)
     setTimeout(() => {
       this.selectNextFloor();
-      const { next } = this;
-      insertStatus('next-floor', next, elevatorId);
-      insertLog(`${closingDoors}`, elevatorId);
+      setLog(this)
       setTimeout(() => {
         const travelTime = moveElevator.call(this);
         this.isMoving = true;
+        setLog(this)
         setTimeout(() => {
           this.isMoving = false;
-          insertLog(`${arrived}`, elevatorId);
+          setLog(this)
           const dirToRemoveFloor = removeFloorFromQueue.call(this);
-          this.direction = 0;
           desactivateButton(this, dirToRemoveFloor);
-          insertStatus('current-floor', this.currentFloor, elevatorId);
-          removeStatus('next-floor', elevatorId);
-          removeStatus('queue-up', elevatorId);
-          removeStatus('queue-down', elevatorId);
           runElevator.call(this);
         }, travelTime);
       }, openCloseDoors);
     }, waiting);
+  } else {
+    this.direction = 0;
+    setLog(this)
   }
 }
 

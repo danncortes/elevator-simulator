@@ -73,9 +73,13 @@ export const form: string = (
 
 export const systemStructure = (
   `<section class="system-container">
-    <section class="log-area2">
-    </section>
-    <section class="building-area">
+    <section class="columns-cont">
+      <section class="log-area">
+        <ul class="log-container">
+        </ul>
+      </section>
+      <section class="building-area">
+      </section>
     </section>
   </section>`
 )
@@ -109,47 +113,3 @@ export const logArea: string = (
   </section>`
 );
 
-export function createLogStructure(elevators): string {
-  let logStructure = '';
-  _.forEach(elevators, (elev) => {
-    const next = elev.next ? elev.next : 'None';
-    const queueUp = elev.queue[2].length ? elev.queue[2] : 'None';
-    const queueDown = elev.queue[1].length ? elev.queue[1] : 'None';
-    const { id, currentFloor } = elev;
-    logStructure += `
-      <div class="log log-${id}">
-        <h2>Elevator ${id}</h2>
-        <section class="status-area">
-          <p><strong>Current floor:</strong><span class="current-floor"> ${currentFloor}</span></p>
-          <p><strong>Next:</strong><span class="next-floor"> ${next}</span></p>
-          <div>
-            <p><strong>Queue</strong></p>
-            <p>Up: <span class="queue-up"> ${queueUp}</span></p>
-            <p>Down: <span class="queue-down"> ${queueDown}</span></p>
-          </div>
-          <div class="log-status">
-            <p><strong>Log</strong></p>
-            <div class="log-content"></div>
-          </div>
-        </section>
-      </div>
-    `;
-  });
-  return logStructure;
-}
-
-export function insertLog(message: string, elevatorId: number): void {
-  const logContainer = document.querySelector(`.log-${elevatorId} .log-content`);
-  if (logContainer) {
-    logContainer.innerHTML = '';
-    logContainer.insertAdjacentHTML('beforeend', `<p>${message}</p>`);
-  }
-}
-
-export function insertStatus(elem: string, message: string, elevatorId: number): void {
-  const statusCont = document.querySelector(`.log-${elevatorId} .${elem}`);
-  if (statusCont) {
-    statusCont.innerHTML = '';
-    statusCont.insertAdjacentHTML('beforeend', ` ${message}`);
-  }
-}

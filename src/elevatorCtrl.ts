@@ -59,11 +59,15 @@ export function runElevator(): void {
   const queueUp = this.queue[2].length ? this.queue[2] : false;
   const queueDown = this.queue[1].length ? this.queue[1] : false;
   if (queueUp || queueDown) {
-    setLog(this)
+    console.log(this.queue)
+    //Waiting...
+    setLog(this);
     setTimeout(() => {
-      this.selectNextFloor();
-      setLog(this)
+      //Closing doors...
+      setLog(this);
       setTimeout(() => {
+        //Starting travel...
+        this.selectNextFloor();
         const travelTime = moveElevator.call(this);
         this.isMoving = true;
         setLog(this)

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export function logItem(logInfo) {
   const { id, direction, next, queue, currentFloor, isMoving } = logInfo;
 

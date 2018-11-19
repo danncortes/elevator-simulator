@@ -82,7 +82,6 @@ export function setLog(elevator) {
   const selectLogElement = document.querySelector(`.log-elev-${id}`)
   const liLog = selectLogElement.parentElement;
   liLog.removeChild(selectLogElement);
-  console.log(elevator)
   const logInfo = getLogInfo(elevator);
   liLog.insertAdjacentHTML('beforeend', logItem(logInfo));
 }

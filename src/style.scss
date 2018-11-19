@@ -8,16 +8,14 @@ body {
   margin: 0 auto;
 }
 
-.system-container {}
-
 .columns-cont {
   display: flex;
   flex-direction: row;
   .log-area {
-    flex-grow: 1
+    flex-basis: 50%
   }
   .building-area {
-    flex-grow: 1;
+    flex-basis: 50%;
     min-height: 200px;
   }
 }
@@ -182,10 +180,6 @@ h1 {
   position: absolute;
 }
 
-.log-area {
-  min-height: 300px;
-}
-
 .reset-bnt-container {
   margin-bottom: 40px;
   .reset-button {
@@ -206,10 +200,11 @@ h1 {
 }
 
 .log-container {
+  width: 350px;
   margin: 0;
   padding: 0;
   list-style: none;
-  li {
+  &>li {
     margin-bottom: 8px;
   }
 }

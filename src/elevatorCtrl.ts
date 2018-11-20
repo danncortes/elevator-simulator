@@ -181,39 +181,46 @@ export function asignFloorToElevator(params: FloorCalledFrom): void {
   }
 }
 
-const currentQueue = [
-  { floor: 6, dir: 2 },
-  { floor: 7, dir: 2 },
-  { floor: 8, dir: 1 },
-  { floor: 7, dir: 1 },
-  { floor: 6, dir: 1 },
-];
-const currentFloor = 4;
-export function asignFloorToElevator2(calledFrom, currentFloor, currentQueue) {
+export function asignFloorToElevator2(calledFrom, currentFloor, elevatorDir, currentQueue) {
   const { dir, floor } = calledFrom;
-  const finalQueue = [...currentQueue];
-  if (!currentQueue.length) {
-    finalQueue.push(calledFrom)
-  } else if (dir === 2) {
-    //going up
-    if (floor > currentFloor) {
-      //FloorCalledFrom is higher
-      if (currentQueue[0].dir === 1 || currentQueue[0].floor > floor) {
-        //if the next floor is in the opposite direction or is higher
-        finalQueue.unshift(calledFrom)
-      } else {
-        //If it's in the same direction
-        for (let i = 0; i < currentQueue.length; i++) {
-          if (dir === currentQueue[i].dir) {
-            if (floor > currentQueue[i].floor && floor < currentQueue[i + 1].floor) {
-              finalQueue.splice(i + 1, 0, calledFrom);
-            }
-          }
-        }
-      }
+  let finalQueue = [...currentQueue];
+
+  finalQueue.push(calledFrom)
+
+  if (finalQueue.length > 1) {
+    let nextFloorOppositeDir = finalQueue.filter(el => {
+      return el.dir !== calledFrom.dir;
+    });
+    if (elevatorDir === 2) {
+      let nextFloorsGoingUp = finalQueue.filter(el => {
+        return el.dir === calledFrom.dir && el.floor > currentFloor
+      });
+      nextFloorsGoingUp = nextFloorsGoingUp.sort((a, b) => a.floor - b.floor);
+
+      nextFloorOppositeDir = nextFloorOppositeDir.sort((a, b) => b.floor - a.floor);
+
+      let lastestFloorsGoingUp = finalQueue.filter(el => {
+        return el.dir === calledFrom.dir && el.floor <= currentFloor
+      });
+      lastestFloorsGoingUp = lastestFloorsGoingUp.sort((a, b) => a.floor - b.floor);
+
+      finalQueue = [...nextFloorsGoingUp, ...nextFloorOppositeDir, ...lastestFloorsGoingUp];
+
+    } else if (elevatorDir === 1) {
+      let nextFloorsGoingDown = finalQueue.filter(el => {
+        return el.dir === calledFrom.dir && el.floor < currentFloor
+      });
+      nextFloorsGoingDown = nextFloorsGoingDown.sort((a, b) => b.floor - a.floor);
+
+      nextFloorOppositeDir = nextFloorOppositeDir.sort((a, b) => a.floor - b.floor);
+
+      let lastestFloorsGoingDown = finalQueue.filter(el => {
+        return el.dir === calledFrom.dir && el.floor >= currentFloor
+      });
+      lastestFloorsGoingDown = lastestFloorsGoingDown.sort((a, b) => b.floor - a.floor);
+
+      finalQueue = [...nextFloorsGoingDown, ...nextFloorOppositeDir, ...lastestFloorsGoingDown];
     }
-  } else {
-    //going down
   }
   return finalQueue
 }

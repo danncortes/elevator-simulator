@@ -180,3 +180,40 @@ export function asignFloorToElevator(params: FloorCalledFrom): void {
     }
   }
 }
+
+const currentQueue = [
+  { floor: 6, dir: 2 },
+  { floor: 7, dir: 2 },
+  { floor: 8, dir: 1 },
+  { floor: 7, dir: 1 },
+  { floor: 6, dir: 1 },
+];
+const currentFloor = 4;
+export function asignFloorToElevator2(calledFrom, currentFloor, currentQueue) {
+  const { dir, floor } = calledFrom;
+  const finalQueue = [...currentQueue];
+  if (!currentQueue.length) {
+    finalQueue.push(calledFrom)
+  } else if (dir === 2) {
+    //going up
+    if (floor > currentFloor) {
+      //FloorCalledFrom is higher
+      if (currentQueue[0].dir === 1 || currentQueue[0].floor > floor) {
+        //if the next floor is in the opposite direction or is higher
+        finalQueue.unshift(calledFrom)
+      } else {
+        //If it's in the same direction
+        for (let i = 0; i < currentQueue.length; i++) {
+          if (dir === currentQueue[i].dir) {
+            if (floor > currentQueue[i].floor && floor < currentQueue[i + 1].floor) {
+              finalQueue.splice(i + 1, 0, calledFrom);
+            }
+          }
+        }
+      }
+    }
+  } else {
+    //going down
+  }
+  return finalQueue
+}

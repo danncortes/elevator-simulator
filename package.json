@@ -49,18 +49,14 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9"
   },
+  "dependencies": {
+    "@types/lodash": "^4.14.118",
+    "npm": "^6.4.1"
+  },
   "jest": {
     "moduleNameMapper": {
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
-    },
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest",
-      "^.+\\.tsx?$": "ts-jest"
     }
-  },
-  "dependencies": {
-    "lodash": "^4.17.11",
-    "npm": "^6.4.1"
   }
 }

@@ -1,4 +1,4 @@
-export function sortQueue(calledFrom, currentFloor, elevatorDir, currentQueue) {
+export function assignAndSortQueue(calledFrom, currentFloor, elevatorDir, currentQueue) {
   const { dir, floor } = calledFrom;
   let finalQueue = [...currentQueue];
 

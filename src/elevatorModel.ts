@@ -1,6 +1,6 @@
 import {
   runElevator,
-} from './elevator/elevatorCtrl';
+} from './elevatorCtrl/elevatorCtrl';
 
 import floorParameters from './floorParameters';
 
@@ -64,4 +64,4 @@ function configElevators(nElevators: number, nFloors: number): Elevators {
   return elevators;
 }
 
-export { Elevator, configElevators };
+export { Elevator, configElevators, Elevators };

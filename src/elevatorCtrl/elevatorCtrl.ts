@@ -2,13 +2,16 @@ import _ from 'lodash';
 import config from '../config';
 
 import {
-  SelectElevator,
   FloorCalledFrom
 } from '../types/types';
 
 import {
   setLog
 } from '../logCtrl';
+
+import { isAlreadyCalledFrom } from './isAlreadyCalledFrom';
+import { isAtTheSameFloorFrom } from './isAtTheSameFloorFrom';
+import { chooseElevator } from './chooseElevator';
 
 const {
   messages: {
@@ -86,70 +89,7 @@ export function runElevator(): void {
   }
 }
 
-/**
- * Determines if the there is an elevator stopped
- * in the same floor where the elevator is called from
-*/
-export function isAtTheFloor(floorCall: FloorCalledFrom, elevators: {}): boolean {
-  const stoppedElevators = _.filter(elevators, elevator => elevator.direction === 0);
-  const stoppedElevSameFloor = _.find(stoppedElevators, elev => elev.currentFloor === floorCall.floor);
-  return (!!stoppedElevSameFloor && true);
-}
 
-export const selectElevator: SelectElevator = (floorCall, elevators, floors) => {
-  const stoppedElevators = {};
-  _.forEach(elevators, (el, key) => {
-    if (el.dir === 0) {
-      stoppedElevators[key] = el;
-    }
-  });
-
-  elevators = (_.isEmpty(stoppedElevators)) ? elevators : stoppedElevators;
-
-  const dirCall = floorCall.dir;
-  let closestElevator;
-  let distance = 0;
-
-  _.forEach(elevators, (elevator, key) => {
-    const { currentFloor, direction } = elevator;
-    const id = key;
-
-    if (dirCall === 2) {
-      // Called to Go up
-      if (direction === 1) {
-        distance = (floorCall.floor - 1) + (currentFloor - 1);
-      } else if (direction === 2) {
-        if (currentFloor < floorCall.floor) {
-          distance = floorCall.floor - currentFloor;
-        } else {
-          distance = floors - currentFloor - 1 + floors + floorCall.floor - 1;
-        }
-      }
-    } else if (dirCall === 1) {
-      if (direction === 2) { // Elevator going Up
-        distance = (floors - currentFloor) + (floors - floorCall.floor);
-      } else if (direction === 1) { // Elevator going Down
-        if (currentFloor > floorCall.floor) {
-          distance = currentFloor - floorCall.floor;
-        } else {
-          distance = floors - 1 + floorCall.floor - 1 + currentFloor - 1;
-        }
-      }
-    }
-
-    if (direction === 0 && (dirCall === 1 || dirCall === 2)) {
-      distance = Math.abs(floorCall.floor - currentFloor);
-    }
-
-    const tempElevator = { id, distance };
-    if (_.isEmpty(closestElevator)) {
-      closestElevator = tempElevator;
-    } else {
-      closestElevator = closestElevator.distance > distance ? tempElevator : closestElevator;
-    }
-  });
-  return closestElevator.id;
-}
 
 export function asignFloorToElevator(params: FloorCalledFrom): void {
   const { floor, dir } = params;
@@ -174,4 +114,30 @@ export function asignFloorToElevator(params: FloorCalledFrom): void {
       this.queue[2].sort((a, b) => a - b);
     }
   }
+}
+
+export function onClickElevatorCallButton(ev, elevators, buildingFloors) {
+  const floor: number = Number(ev.target.dataset.floor);
+  const dir: number = Number(ev.target.dataset.dir);
+
+  const calledFromFloor: FloorCalledFrom = { floor, dir };
+  // Select Elevator to asign floor
+  const isCalledAlready: boolean = isAlreadyCalledFrom(calledFromFloor, elevators);
+  const isAtTheSameFloor: boolean = isAtTheSameFloorFrom(calledFromFloor, elevators);
+
+  if (!isCalledAlready && !isAtTheSameFloor) {
+    ev.target.classList.add('active');
+    const elevatorId: number = chooseElevator(calledFromFloor, elevators, buildingFloors);
+    // Asign floor to Elevator
+    const elevatorQueue = elevators[elevatorId].queue;
+    //   if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
+    //     asignFloorToElevator.call(elevators[elevatorId], calledFromFloor);
+    //     // Run Elevator
+    //     elevators[elevatorId].startEngine();
+    //   } else {
+    //     asignFloorToElevator.call(elevators[elevatorId], calledFromFloor);
+    //   }
+  }
+
+  return elevators;
 }

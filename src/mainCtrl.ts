@@ -13,13 +13,8 @@ import { createLogStructure } from './logCtrl';
 import {
   selectElevator,
   asignFloorToElevator,
-  isAtTheFloor,
-} from './elevator/elevatorCtrl';
-
-
-import {
-  isAlreadyCalledFrom,
-} from './elevator/isAlreadyCalledFrom';
+  onClickElevatorCallButton,
+} from './elevatorCtrl/elevatorCtrl';
 
 import {
   FloorCalledFrom,
@@ -75,37 +70,11 @@ export function createBuilding(mainContainer) {
 
         Array.prototype.forEach.call(floorButtons, (el) => {
           el.addEventListener('click', (ev) => {
-            elevators = onClickFloorButton(ev, nFloors, elevators);
+            elevators = onClickElevatorCallButton(ev, elevators, nFloors);
           });
         });
         resolve(resetBtn)
       }
     })
   })
-}
-
-function onClickFloorButton(ev, nFloors, elevators) {
-  const floor: number = Number(ev.target.dataset.floor);
-  const dir: number = Number(ev.target.dataset.dir);
-
-  const calledFromFloor: FloorCalledFrom = { floor, dir };
-  // Select Elevator to asign floor
-  const isCalledAlready: boolean = isAlreadyCalledFrom(calledFromFloor, elevators);
-  const isAtTheSameFloor: boolean = isAtTheFloor(calledFromFloor, elevators);
-
-  if (!isCalledAlready && !isAtTheSameFloor) {
-    ev.target.classList.add('active');
-    const elevatorId: number = selectElevator(calledFromFloor, elevators, nFloors);
-    // Asign floor to Elevator
-    const elevatorQueue = elevators[elevatorId].queue;
-    if (!elevatorQueue[1].length && !elevatorQueue[2].length) {
-      asignFloorToElevator.call(elevators[elevatorId], calledFromFloor);
-      // Run Elevator
-      elevators[elevatorId].startEngine();
-    } else {
-      asignFloorToElevator.call(elevators[elevatorId], calledFromFloor);
-    }
-  }
-
-  return elevators;
 }

@@ -1,14 +1,14 @@
 import _ from 'lodash';
-import config from './config';
+import config from '../config';
 
 import {
   SelectElevator,
   FloorCalledFrom
-} from './types/types';
+} from '../types/types';
 
 import {
   setLog
-} from './logCtrl';
+} from '../logCtrl';
 
 const {
   messages: {
@@ -84,11 +84,6 @@ export function runElevator(): void {
     this.direction = 0;
     setLog(this)
   }
-}
-
-export function isAlreadyCalled(floorCall: FloorCalledFrom, elevators: {}): boolean {
-  const elevatorAsigned: Element = _.find(elevators, elevator => elevator.queue[floorCall.dir][0] === floorCall.floor);
-  return (!!elevatorAsigned && true);
 }
 
 /**
@@ -179,48 +174,4 @@ export function asignFloorToElevator(params: FloorCalledFrom): void {
       this.queue[2].sort((a, b) => a - b);
     }
   }
-}
-
-export function asignFloorToElevator2(calledFrom, currentFloor, elevatorDir, currentQueue) {
-  const { dir, floor } = calledFrom;
-  let finalQueue = [...currentQueue];
-
-  finalQueue.push(calledFrom)
-
-  if (finalQueue.length > 1) {
-    let nextFloorOppositeDir = finalQueue.filter(el => {
-      return el.dir !== calledFrom.dir;
-    });
-    if (elevatorDir === 2) {
-      let nextFloorsGoingUp = finalQueue.filter(el => {
-        return el.dir === calledFrom.dir && el.floor > currentFloor
-      });
-      nextFloorsGoingUp = nextFloorsGoingUp.sort((a, b) => a.floor - b.floor);
-
-      nextFloorOppositeDir = nextFloorOppositeDir.sort((a, b) => b.floor - a.floor);
-
-      let lastestFloorsGoingUp = finalQueue.filter(el => {
-        return el.dir === calledFrom.dir && el.floor <= currentFloor
-      });
-      lastestFloorsGoingUp = lastestFloorsGoingUp.sort((a, b) => a.floor - b.floor);
-
-      finalQueue = [...nextFloorsGoingUp, ...nextFloorOppositeDir, ...lastestFloorsGoingUp];
-
-    } else if (elevatorDir === 1) {
-      let nextFloorsGoingDown = finalQueue.filter(el => {
-        return el.dir === calledFrom.dir && el.floor < currentFloor
-      });
-      nextFloorsGoingDown = nextFloorsGoingDown.sort((a, b) => b.floor - a.floor);
-
-      nextFloorOppositeDir = nextFloorOppositeDir.sort((a, b) => a.floor - b.floor);
-
-      let lastestFloorsGoingDown = finalQueue.filter(el => {
-        return el.dir === calledFrom.dir && el.floor >= currentFloor
-      });
-      lastestFloorsGoingDown = lastestFloorsGoingDown.sort((a, b) => b.floor - a.floor);
-
-      finalQueue = [...nextFloorsGoingDown, ...nextFloorOppositeDir, ...lastestFloorsGoingDown];
-    }
-  }
-  return finalQueue
 }

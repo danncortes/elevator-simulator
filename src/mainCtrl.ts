@@ -13,9 +13,13 @@ import { createLogStructure } from './logCtrl';
 import {
   selectElevator,
   asignFloorToElevator,
-  isAlreadyCalled,
   isAtTheFloor,
-} from './elevatorCtrl';
+} from './elevator/elevatorCtrl';
+
+
+import {
+  isAlreadyCalledFrom,
+} from './elevator/isAlreadyCalledFrom';
 
 import {
   FloorCalledFrom,
@@ -46,6 +50,7 @@ export function createBuilding(mainContainer) {
         const nFloors: number = Number(inputFloor.value);
 
         elevators = configElevators(nElevators, nFloors);
+        console.log(elevators)
         // Remove Form
         settingsSection.parentNode.removeChild(settingsSection);
 
@@ -85,7 +90,7 @@ function onClickFloorButton(ev, nFloors, elevators) {
 
   const calledFromFloor: FloorCalledFrom = { floor, dir };
   // Select Elevator to asign floor
-  const isCalledAlready: boolean = isAlreadyCalled(calledFromFloor, elevators);
+  const isCalledAlready: boolean = isAlreadyCalledFrom(calledFromFloor, elevators);
   const isAtTheSameFloor: boolean = isAtTheFloor(calledFromFloor, elevators);
 
   if (!isCalledAlready && !isAtTheSameFloor) {

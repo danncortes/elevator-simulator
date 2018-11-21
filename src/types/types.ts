@@ -32,9 +32,7 @@ type FormParam = {
   [key: number]: number
 };
 
-type Queue = {
-  [key: number]: number[]
-};
+type Queue = FloorCalledFrom[]
 
 type Direction = 0 | 1 | 2;
 

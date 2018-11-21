@@ -14,4 +14,7 @@ module.exports = {
     'json',
     'node',
   ],
+  transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!lodash-es)',
+  ],
 };

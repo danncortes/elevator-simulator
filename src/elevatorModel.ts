@@ -1,6 +1,6 @@
 import {
   runElevator,
-} from './elevatorCtrl';
+} from './elevator/elevatorCtrl';
 
 import floorParameters from './floorParameters';
 
@@ -58,7 +58,7 @@ function configElevators(nElevators: number, nFloors: number): Elevators {
   const floorParams = floorParameters(nFloors);
   const elevators: Elevators = {};
   for (let i = 1; i <= nElevators; i++) {
-    const elevator = new Elevator(i, 1, false, 0, { 2: [], 1: [] }, floorParams);
+    const elevator = new Elevator(i, 1, false, 0, [], floorParams);
     elevators[i] = elevator;
   }
   return elevators;

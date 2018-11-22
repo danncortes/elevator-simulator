@@ -63,7 +63,7 @@ export const form: string = (
   `<section class="settings">
     <form class="initial-setting-form">
       ${formGroup('How many Floors?', 'floors', 4, 4, 80, 'Type a number', 'This field is required!')}
-      ${formGroup('How many elevators?', 'elevators', 2, 2, 10, 'Type a number', 'This field is required!')}
+      ${formGroup('How many elevators?', 'elevators', 2, 1, 10, 'Type a number', 'This field is required!')}
       <div class="form-group button-cont">
         <button class="create-building">Build it!</button>
       </div>

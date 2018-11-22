@@ -10,30 +10,10 @@ import {
   Direction
 } from './types/types';
 
-function selectNextFloor(): void {
-  let next: number;
-  const { direction, currentFloor } = this;
-  const queueUp = this.queue[2];
-  const queueDown = this.queue[1];
-
-  const higherFloor = queueUp.find(el => el > currentFloor);
-  const lowerFloor = queueDown.find(el => el < currentFloor);
-
-  if (queueUp.length && !queueDown.length && !lowerFloor) {
-    [next] = queueUp;
-  } else if ((!queueUp.length && queueDown.length) || (queueUp.length && !higherFloor && queueDown.length)) {
-    [next] = queueDown;
-  } else if (direction === 0) {
-    const options = [queueUp[0], queueDown[0]];
-    next = options.reduce((a, b) => (Math.abs(currentFloor - a) < Math.abs(currentFloor - b) ? a : b));
-  } else if (direction === 2 && queueUp.length && higherFloor) {
-    next = higherFloor;
-  } else if (direction === 1 && queueDown.length && lowerFloor) {
-    next = lowerFloor;
-  }
-
-  this.next = next;
-  this.direction = !next ? 0 : (currentFloor > next ? 1 : 2);
+function setNextFloorAndDirection(): void {
+  const { currentFloor } = this;
+  this.next = this.queue[0];
+  this.direction = this.next.floor > currentFloor ? 2 : 1;
 }
 
 type Elevators = {
@@ -51,7 +31,7 @@ class Elevator {
   ) { }
 
   startEngine = runElevator
-  selectNextFloor = selectNextFloor
+  setNextFloorAndDirection = setNextFloorAndDirection
 }
 
 function configElevators(nElevators: number, nFloors: number): Elevators {

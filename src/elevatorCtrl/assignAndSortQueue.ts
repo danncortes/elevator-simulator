@@ -3,7 +3,6 @@ export function assignAndSortQueue(calledFrom, currentFloor, elevatorDir, curren
   let finalQueue = [...currentQueue];
 
   finalQueue.push(calledFrom)
-
   if (finalQueue.length > 1) {
     let nextFloorOppositeDir = finalQueue.filter(el => {
       return el.dir !== elevatorDir;

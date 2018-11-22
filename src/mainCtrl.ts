@@ -11,7 +11,6 @@ import {
 import { createLogStructure } from './logCtrl';
 
 import {
-  selectElevator,
   asignFloorToElevator,
   onClickElevatorCallButton,
 } from './elevatorCtrl/elevatorCtrl';

@@ -15,14 +15,7 @@ const environmentConfig: EnvironmentConfig = {
     speedByFloor: 2000,
     openCloseDoors: 2000,
     waiting: 3500,
-  },
-  messages: {
-    nextFloors: 'Next Floors:',
-    waitingMs: 'Waiting...',
-    closingDoors: 'Closing Doors...',
-    moving: 'Moving to Floor:',
-    arrived: 'Arrived!',
-  },
+  }
 };
 
 export default environmentConfig;

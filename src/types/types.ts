@@ -18,14 +18,7 @@ type EnvironmentConfig = {
     speedByFloor: number,
     openCloseDoors: number,
     waiting: number,
-  },
-  messages: {
-    nextFloors: string,
-    waitingMs: string,
-    closingDoors: string,
-    moving: string,
-    arrived: string,
-  },
+  }
 };
 
 type FormParam = {

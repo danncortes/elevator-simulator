@@ -8,10 +8,9 @@ import {
   systemStructure
 } from './ui/uiCtrl';
 
-import { createLogStructure } from './logCtrl';
+import { createLogStructure } from './logCtrl/logCtrl';
 
 import {
-  asignFloorToElevator,
   onClickElevatorCallButton,
 } from './elevatorCtrl/elevatorCtrl';
 
@@ -44,7 +43,6 @@ export function createBuilding(mainContainer) {
         const nFloors: number = Number(inputFloor.value);
 
         elevators = configElevators(nElevators, nFloors);
-        console.log(elevators)
         // Remove Form
         settingsSection.parentNode.removeChild(settingsSection);
 

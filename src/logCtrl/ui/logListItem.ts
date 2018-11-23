@@ -1,4 +1,6 @@
-export function logListItem(logInfo) {
+import { InfoLog } from '../../types/types';
+
+export function logListItem(logInfo: InfoLog) {
   const { id, direction, next, queue, currentFloor, isMoving } = logInfo;
 
   const dirStatus = direction === 0 ? '-' : (direction === 2 ? '>' : '<');
@@ -27,7 +29,7 @@ export function logListItem(logInfo) {
       <div class="icon">${dirStatus}</div>
     </div>
     <div class="queue">
-      <div class="next">${next}</div>
+      <div class="next">${next.floor}</div>
       <ul>
         ${queueList()}
       </ul>

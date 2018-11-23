@@ -3,7 +3,6 @@ import { configElevators } from './elevatorModel';
 import {
   form,
   buildingStructure,
-  logArea,
   resetButton,
   systemStructure
 } from './ui/uiCtrl';
@@ -13,10 +12,6 @@ import { createLogStructure } from './logCtrl/logCtrl';
 import {
   onClickElevatorCallButton,
 } from './elevatorCtrl/elevatorCtrl';
-
-import {
-  FloorCalledFrom,
-} from './types/types';
 
 export function buildForm(mainContainer: Element): void {
   // Create Form

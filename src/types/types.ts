@@ -21,6 +21,15 @@ type EnvironmentConfig = {
   }
 };
 
+type InfoLog = {
+  id: number,
+  direction: Direction,
+  currentFloor: number,
+  isMoving: boolean,
+  next: FloorCalledFrom,
+  queue: Queue
+}
+
 type FormParam = {
   [key: number]: number
 };
@@ -35,6 +44,7 @@ export {
   EnvironmentConfig,
   FormParam,
   Queue,
-  Direction
+  Direction,
+  InfoLog
 };
 

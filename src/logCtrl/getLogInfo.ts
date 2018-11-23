@@ -1,16 +1,17 @@
 import * as _ from 'lodash';
 
-export function getLogInfo(elevator) {
+import { InfoLog } from '../types/types';
+
+export function getLogInfo(elevator): InfoLog {
   const { direction, queue, id, currentFloor, isMoving, next } = elevator;
   const queueList = _.map(queue, el => el.floor);
-  queueList.shift()
-  const nextFloor = next ? next.floor : next;
+  queueList.shift();
   return {
     id,
     direction,
     currentFloor,
     isMoving,
-    next: nextFloor,
+    next,
     queue: queueList
   }
 }

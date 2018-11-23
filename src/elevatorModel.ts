@@ -25,6 +25,7 @@ function whenElevatorArrives() {
   desactivateFloorButton(this.currentFloor, this.next.dir);
   this.setNextFloorAndDirection();
   this.isMoving = false;
+  updateLog(this)
   this.startEngine();
 }
 

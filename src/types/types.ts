@@ -7,6 +7,7 @@ type ChooseElevator = (floorCalledFrom: FloorCalledFrom, elevators: {}, nFloors:
 
 type EnvironmentConfig = {
   speed: number,
+  averageQueue: boolean,
   building: {
     floorHeight: number,
     elevatorHeight: number,

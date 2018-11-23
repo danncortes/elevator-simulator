@@ -2,6 +2,7 @@ import { EnvironmentConfig } from './types/types';
 
 const environmentConfig: EnvironmentConfig = {
   speed: 1,
+  averageQueue: true,
   building: {
     floorHeight: 34,
     elevatorHeight: 34,

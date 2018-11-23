@@ -22,8 +22,10 @@ export const chooseElevator: ChooseElevator = (floorCall: FloorCalledFrom, eleva
   let closestElevator;
   let distance = 0;
 
+  const candidates = [];
+
   _.forEach(elevators, (elevator: Elevator, key) => {
-    const { currentFloor, direction } = elevator;
+    const { currentFloor, direction, queue } = elevator;
     const id = key;
 
     if (dirCall === 2) {
@@ -49,17 +51,17 @@ export const chooseElevator: ChooseElevator = (floorCall: FloorCalledFrom, eleva
       }
     }
 
-    if (direction === 0 && (dirCall === 1 || dirCall === 2)) {
+    if (direction === 0) {
       distance = Math.abs(floorCall.floor - currentFloor);
     }
 
-    const tempElevator = { id, distance };
+    const tempElevator = { id, distance, nQueue: queue.length };
+
     if (_.isEmpty(closestElevator)) {
       closestElevator = tempElevator;
     } else {
-      closestElevator = closestElevator.distance > distance ? tempElevator : closestElevator;
+      closestElevator = closestElevator.nQueue > tempElevator.nQueue ? tempElevator : closestElevator;
     }
   });
-
   return Number(closestElevator.id);
 }

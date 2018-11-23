@@ -1,10 +1,10 @@
-import config from './config';
+import config from '../config';
 
 import {
   FormParam
-} from './types/types';
+} from '../types/types';
 
-export default function floorParameters(floors: number): FormParam {
+export function floorParameters(floors: number): FormParam {
   const { elevatorHeight, floorDivHeight } = config.building;
   const setting = {};
   for (let i = 1; i <= floors; i++) {

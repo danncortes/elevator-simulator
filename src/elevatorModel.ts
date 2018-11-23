@@ -1,6 +1,6 @@
-import { updateLog } from './logCtrl/logCtrl';
-import { desactivateFloorButton } from './elevatorCtrl/desactivateFloorButton';
-import floorParameters from './floorParameters';
+import { updateLog } from './log/logCtrl';
+import { desactivateFloorButton } from './elevator/desactivateFloorButton';
+import { floorParameters } from './elevator/floorParameters';
 import config from './config';
 
 const {
@@ -13,6 +13,8 @@ import {
   Direction,
   FloorCalledFrom
 } from './types/types';
+
+import { setTravelTime } from './elevator/setTravelTime';
 
 function setNextFloorAndDirection(): void {
   const { currentFloor } = this;
@@ -29,17 +31,11 @@ function whenElevatorArrives() {
   this.startEngine();
 }
 
-function moveElevator() {
-  const { id, next, currentFloor } = this;
+function moveElevator(): void {
+  const { id, next, currentFloor, isMoving } = this;
   const elevatorElement = <HTMLElement>document.querySelectorAll(`[data-elevator="${id}"]`)[0];
   const nextYPosition = this.floorParameters[next.floor];
-  let floorDiff = 0;
-  if (this.isMoving) {
-    //floorDiff = Math.abs((currentFloor - next.floor) * config.building.floorHeight);
-  } else {
-    floorDiff = Math.abs(currentFloor - next.floor);
-  }
-  const travelTime = config.times.speedByFloor * floorDiff;
+  const travelTime = setTravelTime(isMoving, elevatorElement, nextYPosition, currentFloor, next);
   elevatorElement.style.transition = `bottom ${travelTime}ms`;
   elevatorElement.style.transitionTimingFunction = 'linear';
   elevatorElement.style.bottom = `${nextYPosition}px`;
@@ -56,7 +52,7 @@ function reAssignElevator() {
 
 export function runElevator(): void {
   if (!!this.queue.length) {
-    // //Waiting...
+    //Waiting...
     setTimeout(() => {
       //Closing doors...
       setTimeout(() => {

@@ -2,7 +2,7 @@ import {
   FloorCalledFrom
 } from '../types/types';
 
-import { updateLog } from '../logCtrl/logCtrl';
+import { updateLog } from '../log/logCtrl';
 
 import { isAlreadyCalledFrom } from './isAlreadyCalledFrom';
 import { isAtTheSameFloorFrom } from './isAtTheSameFloorFrom';

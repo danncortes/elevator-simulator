@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { logListItem } from './ui/logListItem';
+import { logListItem } from './logListItem';
 import { getLogInfo } from './getLogInfo';
 
 export function createLogStructure(elevators): string {

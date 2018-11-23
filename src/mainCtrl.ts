@@ -7,11 +7,11 @@ import {
   systemStructure
 } from './ui/uiCtrl';
 
-import { createLogStructure } from './logCtrl/logCtrl';
+import { createLogStructure } from './log/logCtrl';
 
 import {
   onClickElevatorCallButton,
-} from './elevatorCtrl/elevatorCtrl';
+} from './elevator/elevatorCtrl';
 
 export function buildForm(mainContainer: Element): void {
   // Create Form

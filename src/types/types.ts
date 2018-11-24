@@ -3,7 +3,7 @@ type FloorCalledFrom = {
   dir: number
 };
 
-type ChooseElevator = (floorCalledFrom: FloorCalledFrom, elevators: {}, nFloors: number) => number;
+type ChooseElevator = (distributed: boolean, floorCalledFrom: FloorCalledFrom, elevators: {}, nFloors: number) => number;
 
 type EnvironmentConfig = {
   speed: number,

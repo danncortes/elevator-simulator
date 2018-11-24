@@ -25,7 +25,9 @@ export function onClickElevatorCallButton(ev, elevators, buildingFloors) {
 
   if (!isCalledAlready && !isAtTheSameFloor) {
     ev.target.classList.add('active');
-    const elevatorId: number = chooseElevator(calledFromFloor, elevators, buildingFloors);
+
+    const distributed = true;
+    const elevatorId: number = chooseElevator(distributed, calledFromFloor, elevators, buildingFloors);
     // Asign floor to Elevator
     const elevatorQueue = elevators[elevatorId].queue;
 

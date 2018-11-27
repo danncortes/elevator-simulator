@@ -11,9 +11,11 @@ body {
 .columns-cont {
   display: flex;
   flex-direction: row;
+
   .log-area {
     flex-basis: 50%
   }
+
   .building-area {
     flex-basis: 50%;
     min-height: 200px;
@@ -41,18 +43,22 @@ h1 {
   padding: 12px;
   border-radius: 5px;
   background-color: #ddd;
+
   .form-group {
     margin-right: 16px;
   }
+
   .form-group.button-cont {
     display: flex;
     align-items: flex-end;
   }
+
   label {
     display: block;
     margin-bottom: 5px;
-    font-size: 18px;
+    font-size: 16px;
   }
+
   input {
     padding: 6px 8px;
     border-radius: 3px;
@@ -60,6 +66,7 @@ h1 {
     font-size: 14px;
     border: 1px solid rgba(0, 0, 0, 0.15);
   }
+
   button {
     font-size: 16px;
     padding: 6px 10px;
@@ -70,6 +77,7 @@ h1 {
 
 .building-container {
   display: flex;
+
   .floor-numbers {
     margin-top: 20px;
     display: flex;
@@ -77,13 +85,16 @@ h1 {
     flex-wrap: wrap;
     align-content: space-around;
     width: 20px;
+
     .number {
       width: 100%;
     }
   }
+
   .building {
     background-color: #ddd;
     position: relative;
+
     .floors {
       position: absolute;
       width: 100%;
@@ -91,6 +102,7 @@ h1 {
       flex-direction: row;
       flex-wrap: wrap;
       align-content: space-between;
+
       .floor {
         height: 8px;
         width: 100%;
@@ -99,22 +111,26 @@ h1 {
         z-index: 1;
       }
     }
+
     .elevators-cont {
       display: flex;
       margin: 10px 10px 0;
     }
+
     .elevator-lane {
       width: 25px;
       margin: 10px 14px 0px;
       background-color: #222;
       position: relative;
     }
+
     .elevator {
       background-color: rgb(0, 104, 202);
       position: absolute;
       bottom: 0;
     }
   }
+
   .controls {
     margin-top: 20px;
     display: flex;
@@ -123,6 +139,7 @@ h1 {
     align-content: space-around;
     width: 50px;
     margin-left: 10px;
+
     .control-floor {
       display: flex;
       width: 100%;
@@ -137,13 +154,16 @@ h1 {
   background-color: #ddd;
   position: relative;
   cursor: pointer;
+
   &.active {
     background-color: rgb(90, 189, 90);
   }
+
   &.up span {
     transform: rotate(-90deg);
     left: 6px;
   }
+
   &:after {
     display: block;
     position: absolute;
@@ -182,6 +202,7 @@ h1 {
 
 .reset-bnt-container {
   margin-bottom: 40px;
+
   .reset-button {
     display: block;
     margin: 0 auto;
@@ -204,6 +225,7 @@ h1 {
   margin: 0;
   padding: 0;
   list-style: none;
+
   &>li {
     margin-bottom: 8px;
   }
@@ -215,48 +237,118 @@ h1 {
   display: flex;
   flex-direction: row;
   padding: 5px 7px;
+
   .title {
     margin-right: 14px;
+
     h3 {
       color: rgba(0, 0, 0, 0.6);
       margin: 0;
       font-size: 14px;
     }
   }
+
   .current {
     @extend .log-box;
     color: white;
     background-color: rgba(0, 0, 0, 0.4);
     margin-right: 14px;
   }
+
   .status {
     margin-right: 14px;
+
     .icon {
       @extend .log-box;
       background-color: rgba(0, 0, 0, 0.4);
     }
   }
+
   .queue {
     display: flex;
+
     .next {
       @extend .log-box;
       background-color: rgba(93, 165, 0, 0.438);
       color: white;
     }
+
     ul {
       margin: 0;
       padding: 0;
       list-style: none;
       display: flex;
       flex-direction: row;
+
       li {
         margin-left: 4px;
+
         .floor {
           @extend .log-box;
           background-color: rgba(0, 0, 0, 0.3);
           color: white;
         }
       }
+    }
+  }
+}
+
+.switch-container {
+  margin-right: 15px;
+
+  .title {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 200;
+  }
+}
+
+.doc-switch {
+  $width: 36px;
+  $height: 20px;
+  $padding: 3px;
+  position: relative;
+  width: $width;
+  height: $height;
+
+  &>input {
+    margin: 5px 0 0 10px;
+  }
+
+  &>input:before {
+    cursor: pointer;
+    height: $height;
+    width: $width;
+    left: 0;
+    top: 0;
+    position: absolute;
+    display: block;
+    content: '';
+    background-color: #bbb;
+    border-radius: $height;
+  }
+
+  &>input:after {
+    cursor: pointer;
+    transition: all 0.1s;
+    top: $padding;
+    left: $padding;
+    border-radius: 50%;
+    position: absolute;
+    content: '';
+    height: $height - ($padding * 2);
+    width: $height - ($padding * 2);
+    background-color: white;
+    z-index: 1;
+  }
+
+  &>input:checked {
+    &:after {
+      left: $width - ($height - $padding);
+    }
+
+    &:before {
+      background-color: #33cc33;
     }
   }
 }

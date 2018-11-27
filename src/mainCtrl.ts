@@ -27,6 +27,7 @@ export function createBuilding(mainContainer) {
     const settingsSection: Element = document.querySelector('.settings');
     const inputFloor: HTMLFormElement = document.querySelector('#floors');
     const inputElevators: HTMLFormElement = document.querySelector('#elevators');
+    const queueCheck: HTMLFormElement = document.querySelector('#queue-check');
     const builderForm: HTMLFormElement = document.querySelector('.initial-setting-form');
 
     let resetBtn;
@@ -36,6 +37,7 @@ export function createBuilding(mainContainer) {
       if (isValidForm) {
         const nElevators: number = Number(inputElevators.value);
         const nFloors: number = Number(inputFloor.value);
+        const queueType: boolean = queueCheck.value;
 
         elevators = configElevators(nElevators, nFloors);
         // Remove Form
@@ -51,7 +53,7 @@ export function createBuilding(mainContainer) {
         resetBtn = document.querySelector('.reset-button');
 
         // Building Creation
-        buildingArea.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators));
+        buildingArea.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators, queueType));
 
         // Log Area creation
         const logContainer: Element = document.querySelector('.log-container');

@@ -64,6 +64,12 @@ export const form: string = (
     <form class="initial-setting-form">
       ${formGroup('How many Floors?', 'floors', 4, 4, 80, 'Type a number', 'This field is required!')}
       ${formGroup('How many elevators?', 'elevators', 2, 1, 10, 'Type a number', 'This field is required!')}
+      <div class="switch-container">
+        <h4 class="title">Distributed queue?</h4>
+        <div class="doc-switch">
+          <input type="checkbox" value="true" id="queue-check" checked onClick="(()=>{this.value = !this.value})()">
+        </div>
+      </div>
       <div class="form-group button-cont">
         <button class="create-building">Build it!</button>
       </div>
@@ -84,7 +90,7 @@ export const systemStructure = (
   </section>`
 )
 
-export function buildingStructure(floors: number, elevators: number): string {
+export function buildingStructure(floors: number, elevators: number, queueType): string {
   const { floorHeight } = config.building;
   return (
     `<div class="building-container">
@@ -99,7 +105,7 @@ export function buildingStructure(floors: number, elevators: number): string {
           ${createElevatorsStructure(elevators, floors)}
         </div>
       </div>
-      <div class="controls">
+      <div class="controls" data-queue="${queueType}">
         ${createFloorControl(floors)}
       </div>
     </div>`

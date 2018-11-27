@@ -17,6 +17,8 @@ function assignFloorToElevator(elevator, calledFromFloor: FloorCalledFrom): Floo
 export function onClickElevatorCallButton(ev, elevators, buildingFloors) {
   const floor: number = Number(ev.target.dataset.floor);
   const dir: number = Number(ev.target.dataset.dir);
+  const controlsContainer: HTMLElement = document.querySelector('.controls')
+  const queueType: boolean = controlsContainer.dataset.queue === 'true' ? true : false;
 
   const calledFromFloor: FloorCalledFrom = { floor, dir };
   // Select Elevator to asign floor
@@ -26,8 +28,7 @@ export function onClickElevatorCallButton(ev, elevators, buildingFloors) {
   if (!isCalledAlready && !isAtTheSameFloor) {
     ev.target.classList.add('active');
 
-    const distributed = true;
-    const elevatorId: number = chooseElevator(distributed, calledFromFloor, elevators, buildingFloors);
+    const elevatorId: number = chooseElevator(queueType, calledFromFloor, elevators, buildingFloors);
     // Asign floor to Elevator
     const elevatorQueue = elevators[elevatorId].queue;
 

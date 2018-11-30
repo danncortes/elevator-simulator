@@ -1,3 +1,7 @@
+import {
+  ElevatorInterface
+} from '../interfaces';
+
 type FloorCalledFrom = {
   floor: number,
   dir: number
@@ -31,7 +35,7 @@ type InfoLog = {
   queue: Queue
 }
 
-type FormParam = {
+type FloorParam = {
   [key: number]: number
 };
 
@@ -39,11 +43,16 @@ type Queue = FloorCalledFrom[]
 
 type Direction = 0 | 1 | 2;
 
+type Elevators = {
+  [key: number]: ElevatorInterface
+}
+
 export {
+  Elevators,
   FloorCalledFrom,
   ChooseElevator,
   EnvironmentConfig,
-  FormParam,
+  FloorParam,
   Queue,
   Direction,
   InfoLog

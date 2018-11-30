@@ -1,6 +1,7 @@
 import { updateLog } from './log/logCtrl';
 import { desactivateFloorButton } from './elevator/desactivateFloorButton';
-import { floorParameters } from './elevator/floorParameters';
+import { setTravelTime } from './elevator/setTravelTime';
+
 import config from './config';
 
 const {
@@ -8,13 +9,33 @@ const {
 } = config;
 
 import {
-  FormParam,
   Queue,
   Direction,
-  FloorCalledFrom
-} from './types/types';
+  FloorCalledFrom,
+} from './types';
 
-import { setTravelTime } from './elevator/setTravelTime';
+
+import {
+  ElevatorInterface
+} from './interfaces';
+
+class Elevator implements ElevatorInterface {
+  constructor(
+    public id: number,
+    public currentFloor: number,
+    public isMoving: boolean,
+    public direction: Direction,
+    public queue: Queue,
+    public next: boolean | FloorCalledFrom,
+  ) { }
+
+  startEngine = runElevator
+  setNextFloorAndDirection = setNextFloorAndDirection
+  setTimeOut: null | Function = null
+  moveElevator = moveElevator
+  reAssignElevator = reAssignElevator
+  whenElevatorArrives = whenElevatorArrives
+}
 
 function setNextFloorAndDirection(): void {
   const { currentFloor } = this;
@@ -31,10 +52,10 @@ function whenElevatorArrives() {
   this.startEngine();
 }
 
-function moveElevator(): void {
+function moveElevator(floorParameters): void {
   const { id, next, currentFloor, isMoving } = this;
   const elevatorElement = <HTMLElement>document.querySelectorAll(`[data-elevator="${id}"]`)[0];
-  const nextYPosition = this.floorParameters[next.floor];
+  const nextYPosition = floorParameters[next.floor];
   const travelTime = setTravelTime(isMoving, elevatorElement, nextYPosition, currentFloor, next);
   elevatorElement.style.transition = `bottom ${travelTime}ms`;
   elevatorElement.style.transitionTimingFunction = 'linear';
@@ -45,19 +66,19 @@ function moveElevator(): void {
   }, travelTime)
 }
 
-function reAssignElevator() {
+function reAssignElevator(floorParameters) {
   clearTimeout(this.setTimeOut);
-  this.moveElevator()
+  this.moveElevator(floorParameters)
 }
 
-export function runElevator(): void {
+function runElevator(floorParameters): void {
   if (!!this.queue.length) {
     //Waiting...
     setTimeout(() => {
       //Closing doors...
       setTimeout(() => {
         //Starting travel...
-        this.moveElevator();
+        this.moveElevator(floorParameters);
       }, openCloseDoors);
     }, waiting);
   } else {
@@ -66,37 +87,6 @@ export function runElevator(): void {
   }
 }
 
-type Elevators = {
-  [key: number]: Elevator
-}
-
-class Elevator {
-  constructor(
-    public id: number,
-    public currentFloor: number,
-    public isMoving: boolean,
-    public direction: Direction,
-    public queue: Queue,
-    public floorParameters: FormParam,
-    public next: boolean | FloorCalledFrom,
-  ) { }
-
-  startEngine = runElevator
-  setNextFloorAndDirection = setNextFloorAndDirection
-  setTimeOut: null | Function = null
-  moveElevator = moveElevator
-  reAssignElevator = reAssignElevator
-  whenElevatorArrives = whenElevatorArrives
-}
-
-function configElevators(nElevators: number, nFloors: number): Elevators {
-  const floorParams = floorParameters(nFloors);
-  const elevators: Elevators = {};
-  for (let i = 1; i <= nElevators; i++) {
-    const elevator = new Elevator(i, 1, false, 0, [], floorParams, false);
-    elevators[i] = elevator;
-  }
-  return elevators;
-}
-
-export { Elevator, configElevators, Elevators };
+export {
+  Elevator
+};

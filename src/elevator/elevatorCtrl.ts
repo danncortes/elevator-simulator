@@ -1,6 +1,6 @@
 import {
   FloorCalledFrom
-} from '../types/types';
+} from '../types';
 
 import { updateLog } from '../log/logCtrl';
 
@@ -14,7 +14,7 @@ function assignFloorToElevator(elevator, calledFromFloor: FloorCalledFrom): Floo
   return assignAndSortQueue(calledFromFloor, currentFloor, direction, queue);
 }
 
-export function onClickElevatorCallButton(ev, elevators, buildingFloors) {
+export function onClickElevatorCallButton(ev, building, buildingFloors) {
   const floor: number = Number(ev.target.dataset.floor);
   const dir: number = Number(ev.target.dataset.dir);
   const controlsContainer: HTMLElement = document.querySelector('.controls')
@@ -22,28 +22,28 @@ export function onClickElevatorCallButton(ev, elevators, buildingFloors) {
 
   const calledFromFloor: FloorCalledFrom = { floor, dir };
   // Select Elevator to asign floor
-  const isCalledAlready: boolean = isAlreadyCalledFrom(calledFromFloor, elevators);
-  const isAtTheSameFloor: boolean = isAtTheSameFloorFrom(calledFromFloor, elevators);
+  const isCalledAlready: boolean = isAlreadyCalledFrom(calledFromFloor, building.elevators);
+  const isAtTheSameFloor: boolean = isAtTheSameFloorFrom(calledFromFloor, building.elevators);
 
   if (!isCalledAlready && !isAtTheSameFloor) {
     ev.target.classList.add('active');
 
-    const elevatorId: number = chooseElevator(queueType, calledFromFloor, elevators, buildingFloors);
+    const elevatorId: number = chooseElevator(queueType, calledFromFloor, building.elevators, buildingFloors);
     // Asign floor to Elevator
-    const elevatorQueue = elevators[elevatorId].queue;
+    const elevatorQueue = building.elevators[elevatorId].queue;
 
-    elevators[elevatorId].queue = assignFloorToElevator(elevators[elevatorId], calledFromFloor);
-    elevators[elevatorId].setNextFloorAndDirection();
-    updateLog(elevators[elevatorId]);
+    building.elevators[elevatorId].queue = assignFloorToElevator(building.elevators[elevatorId], calledFromFloor);
+    building.elevators[elevatorId].setNextFloorAndDirection();
+    updateLog(building.elevators[elevatorId]);
 
-    if (elevators[elevatorId].isMoving === true) {
-      elevators[elevatorId].reAssignElevator();
+    if (building.elevators[elevatorId].isMoving === true) {
+      building.elevators[elevatorId].reAssignElevator();
     }
     // Run Elevator
     if (!elevatorQueue.length) {
-      elevators[elevatorId].startEngine();
+      building.elevators[elevatorId].startEngine(building.floorParameters);
     }
   }
 
-  return elevators;
+  return building.elevators;
 }

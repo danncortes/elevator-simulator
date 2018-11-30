@@ -3,9 +3,10 @@ import * as _ from 'lodash';
 import {
   ChooseElevator,
   FloorCalledFrom
-} from '../types/types';
+} from '../types';
 
-import { Elevator, Elevators } from '../elevatorModel';
+import { Elevator, } from '../elevatorModel';
+import { Elevators } from '../types';
 
 type ChosenElevator = {
   id: number,

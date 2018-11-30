@@ -1,4 +1,4 @@
-import { configElevators } from './elevatorModel';
+import { configElevators } from './buildingModel';
 
 import {
   form,
@@ -8,6 +8,8 @@ import {
 } from './ui/uiCtrl';
 
 import { createLogStructure } from './log/logCtrl';
+
+import { BuildingInterface } from './interfaces';
 
 import {
   onClickElevatorCallButton,
@@ -21,7 +23,7 @@ export function buildForm(mainContainer: Element): void {
 export function createBuilding(mainContainer) {
   return new Promise((resolve, reject) => {
 
-    let elevators = {};
+    let building: BuildingInterface;
 
     const createBuildingButton = document.querySelector('.create-building');;
     const settingsSection: Element = document.querySelector('.settings');
@@ -39,7 +41,7 @@ export function createBuilding(mainContainer) {
         const nFloors: number = Number(inputFloor.value);
         const queueType: boolean = queueCheck.value;
 
-        elevators = configElevators(nElevators, nFloors);
+        building = configElevators(nElevators, nFloors);
         // Remove Form
         settingsSection.parentNode.removeChild(settingsSection);
 
@@ -54,17 +56,16 @@ export function createBuilding(mainContainer) {
 
         // Building Creation
         buildingArea.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators, queueType));
-
         // Log Area creation
         const logContainer: Element = document.querySelector('.log-container');
-        logContainer.insertAdjacentHTML('beforeend', createLogStructure(elevators));
+        logContainer.insertAdjacentHTML('beforeend', createLogStructure(building.elevators));
 
         // Getting all the buttons by floor
         const floorButtons = document.getElementsByClassName('floor-button');
 
         Array.prototype.forEach.call(floorButtons, (el) => {
           el.addEventListener('click', (ev) => {
-            elevators = onClickElevatorCallButton(ev, elevators, nFloors);
+            building.elevators = onClickElevatorCallButton(ev, building, nFloors);
           });
         });
         resolve(resetBtn)

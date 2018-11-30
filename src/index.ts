@@ -13,9 +13,7 @@ function initSystem(): void {
   createBuilding(mainContainer).then((res: Element) => {
     const resetButton = res;
     resetButton.addEventListener('click', () => {
-      const systemContainer: Element = document.querySelector('.system-container');
-      systemContainer.parentNode.removeChild(systemContainer);
-      initSystem();
+      location.reload();
     })
   })
 }

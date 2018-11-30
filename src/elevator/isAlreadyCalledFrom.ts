@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import {
   FloorCalledFrom,
-} from '../types/types';
+} from '../types';
 
 export function isAlreadyCalledFrom(floorCall: FloorCalledFrom, elevators): boolean {
   const elevatorAsigned = _.findKey(elevators, (elevator) => {

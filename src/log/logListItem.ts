@@ -1,4 +1,4 @@
-import { InfoLog } from '../types/types';
+import { InfoLog } from '../types';
 
 export function logListItem(logInfo: InfoLog) {
   const { id, direction, next, queue, currentFloor, isMoving } = logInfo;

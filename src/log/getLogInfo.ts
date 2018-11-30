@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { InfoLog } from '../types/types';
+import { InfoLog } from '../types';
 
 export function getLogInfo(elevator): InfoLog {
   const { direction, queue, id, currentFloor, isMoving, next } = elevator;

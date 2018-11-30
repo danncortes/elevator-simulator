@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import {
   FloorCalledFrom,
-} from '../types/types';
+} from '../types';
 
 export function isAtTheSameFloorFrom(floorCall: FloorCalledFrom, elevators) {
   const stoppedElevators = _.filter(elevators, elevator => elevator.direction === 0);

@@ -315,7 +315,7 @@ h1 {
     margin: 5px 0 0 10px;
   }
 
-  &>input:before {
+  &>input::before {
     cursor: pointer;
     height: $height;
     width: $width;
@@ -328,7 +328,7 @@ h1 {
     border-radius: $height;
   }
 
-  &>input:after {
+  &>input::after {
     cursor: pointer;
     transition: all 0.1s;
     top: $padding;
@@ -347,7 +347,7 @@ h1 {
       left: $width - ($height - $padding);
     }
 
-    &:before {
+    &::before {
       background-color: #33cc33;
     }
   }

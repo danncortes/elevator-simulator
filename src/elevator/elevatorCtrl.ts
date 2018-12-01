@@ -30,14 +30,13 @@ export function onClickElevatorCallButton(ev, building, buildingFloors) {
 
     const elevatorId: number = chooseElevator(queueType, calledFromFloor, building.elevators, buildingFloors);
     // Asign floor to Elevator
-    const elevatorQueue = building.elevators[elevatorId].queue;
 
-    building.elevators[elevatorId].queue = assignFloorToElevator(building.elevators[elevatorId], calledFromFloor);
+    const elevatorQueue = building.elevators[elevatorId].queue;
+    building.assignFloorToElevator(elevatorId, calledFromFloor);
     building.elevators[elevatorId].setNextFloorAndDirection();
     updateLog(building.elevators[elevatorId]);
-
     if (building.elevators[elevatorId].isMoving === true) {
-      building.elevators[elevatorId].reAssignElevator();
+      building.reAssignElevator(elevatorId);
     }
     // Run Elevator
     if (!elevatorQueue.length) {

@@ -17,13 +17,14 @@ interface ElevatorInterface {
   setNextFloorAndDirection(): void,
   setTimeOut: null | Function,
   moveElevator(floorParameters: FloorParam): void,
-  reAssignElevator(floorParameters: FloorParam): void,
-  whenElevatorArrives(): void,
+  whenElevatorArrives(floorParameters: FloorParam): void,
 }
 
 interface BuildingInterface {
   readonly floorParameters: FloorParam,
-  elevators: Elevators
+  elevators: Elevators,
+  assignFloorToElevator(elevatorId: number, calledFromFloor: FloorCalledFrom): void
+  reAssignElevator(floorParameters: FloorParam): void,
 }
 
 export { ElevatorInterface, BuildingInterface };

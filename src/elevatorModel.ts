@@ -29,12 +29,19 @@ class Elevator implements ElevatorInterface {
     public next: boolean | FloorCalledFrom,
   ) { }
 
-  startEngine = runElevator
-  setNextFloorAndDirection = setNextFloorAndDirection
+  startEngine(floorParameters) {
+    return runElevator.call(this, floorParameters);
+  }
+  setNextFloorAndDirection() {
+    return setNextFloorAndDirection.call(this)
+  }
   setTimeOut: null | Function = null
-  moveElevator = moveElevator
-  reAssignElevator = reAssignElevator
-  whenElevatorArrives = whenElevatorArrives
+  moveElevator(floorParameters) {
+    return moveElevator.call(this, floorParameters)
+  }
+  whenElevatorArrives(floorParameters) {
+    return whenElevatorArrives.call(this, floorParameters)
+  }
 }
 
 function setNextFloorAndDirection(): void {
@@ -43,13 +50,13 @@ function setNextFloorAndDirection(): void {
   this.direction = this.next ? (this.next.floor > currentFloor ? 2 : 1) : 0;
 }
 
-function whenElevatorArrives() {
+function whenElevatorArrives(floorParameters) {
   this.currentFloor = this.queue.shift().floor;
   desactivateFloorButton(this.currentFloor, this.next.dir);
   this.setNextFloorAndDirection();
   this.isMoving = false;
   updateLog(this)
-  this.startEngine();
+  this.startEngine(floorParameters);
 }
 
 function moveElevator(floorParameters): void {
@@ -62,15 +69,9 @@ function moveElevator(floorParameters): void {
   elevatorElement.style.bottom = `${nextYPosition}px`;
   this.isMoving = true;
   this.setTimeOut = setTimeout(() => {
-    this.whenElevatorArrives()
+    this.whenElevatorArrives(floorParameters)
   }, travelTime)
 }
-
-function reAssignElevator(floorParameters) {
-  clearTimeout(this.setTimeOut);
-  this.moveElevator(floorParameters)
-}
-
 function runElevator(floorParameters): void {
   if (!!this.queue.length) {
     //Waiting...

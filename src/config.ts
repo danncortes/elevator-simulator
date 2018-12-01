@@ -1,4 +1,4 @@
-import { EnvironmentConfig } from './types/types';
+import { EnvironmentConfig } from './types';
 
 const environmentConfig: EnvironmentConfig = {
   speed: 1,

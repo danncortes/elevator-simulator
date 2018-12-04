@@ -68,6 +68,7 @@ export const form: string = (
         <h4 class="title">Distributed queue?</h4>
         <div class="doc-switch">
           <input type="checkbox" value="true" id="queue-check" checked onClick="(()=>{this.value = !this.value})()">
+          <div></div>
         </div>
       </div>
       <div class="form-group button-cont">

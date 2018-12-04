@@ -307,48 +307,47 @@ h1 {
   $width: 36px;
   $height: 20px;
   $padding: 3px;
-  position: relative;
-  width: $width;
-  height: $height;
-
-  &>input {
-    margin: 5px 0 0 10px;
-  }
-
-  &>input::before {
-    cursor: pointer;
-    height: $height;
-    width: $width;
-    left: 0;
-    top: 0;
-    position: absolute;
-    display: block;
-    content: '';
-    background-color: #bbb;
+  position:relative;
+  width:$width;
+  height:$height;
+  & div{
+    cursor:pointer;
+    height:$height;
+    width:$width;
+    left:0;
+    top:0;
+    position:relative;
+    display:block;
+    content:'';
+    background-color: #ccc;
     border-radius: $height;
+    &::after{
+      cursor:pointer;
+      transition: all 0.1s;
+      top: $padding;
+      left:$padding;
+      border-radius: 50%;
+      position:absolute;
+      content:'';
+      height: $height - ($padding * 2);
+      width:$height - ($padding * 2);
+      background-color: white;
+      z-index: 1;
+    }
   }
-
-  &>input::after {
-    cursor: pointer;
-    transition: all 0.1s;
-    top: $padding;
-    left: $padding;
-    border-radius: 50%;
-    position: absolute;
-    content: '';
-    height: $height - ($padding * 2);
-    width: $height - ($padding * 2);
-    background-color: white;
-    z-index: 1;
-  }
-
-  &>input:checked {
-    &:after {
+  & > input:checked + div{
+    background-color: #33cc33;
+    &::after{
       left: $width - ($height - $padding);
     }
-
-    &::before {
-      background-color: #33cc33;
-    }
+  }
+  & > input{
+    position:absolute;
+    margin:0px 0 0 0px;
+    width: $width;
+    height: $height;
+    z-index:2;
+    cursor:pointer;
+    opacity:0;
   }
 }

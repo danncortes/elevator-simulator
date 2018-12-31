@@ -1,7 +1,9 @@
 import * as _ from 'lodash';
 
 export function logItem(logInfo) {
-  const { id, direction, next, queue, currentFloor, isMoving } = logInfo;
+  const {
+    id, direction, next, queue, currentFloor, isMoving,
+  } = logInfo;
 
   const dirStatus = direction === 0 ? '-' : (direction === 2 ? '>' : '<');
   const isQueueEmpty = (queue.length === 0);
@@ -10,11 +12,11 @@ export function logItem(logInfo) {
 
   const queueList = () => {
     let list = '';
-    queue.forEach(element => {
-      list += `<li><span class="floor">${element}</span></li>`
+    queue.forEach((element) => {
+      list += `<li><span class="floor">${element}</span></li>`;
     });
     return list;
-  }
+  };
 
   function statusText(statusText) {
     return (`
@@ -34,14 +36,13 @@ export function logItem(logInfo) {
         ${queueList()}
       </ul>
     </div>`
-  )
+  );
 
   function displayState() {
     if (isStop) {
       return statusText('Stopped');
-    } else {
-      return queueInfo;
     }
+    return queueInfo;
   }
 
   return (`
@@ -52,12 +53,14 @@ export function logItem(logInfo) {
       <div class="current">${currentFloor}</div>
       ${displayState()}
     </article>
-  `)
+  `);
 }
 
 export function getLogInfo(elevator) {
-  const { direction, queue, id, currentFloor, isMoving } = elevator;
-  let queueList = []
+  const {
+    direction, queue, id, currentFloor, isMoving,
+  } = elevator;
+  let queueList = [];
   queueList = direction === 2 ? [...queue[2], ...queue[1]] : (direction === 1 ? [...queue[1], ...queue[2]] : []);
   const next = queueList.shift();
   return {
@@ -67,7 +70,7 @@ export function getLogInfo(elevator) {
     isMoving,
     next,
     queue: queueList,
-  }
+  };
 }
 
 export function createLogStructure(elevators): string {
@@ -75,13 +78,13 @@ export function createLogStructure(elevators): string {
   _.forEach(elevators, (elev) => {
     const logInfo = getLogInfo(elev);
     logStructure += `<li>${logItem(logInfo)}</li>`;
-  })
+  });
   return logStructure;
 }
 
 export function setLog(elevator) {
   const { id } = elevator;
-  const selectLogElement = document.querySelector(`.log-elev-${id}`)
+  const selectLogElement = document.querySelector(`.log-elev-${id}`);
   const liLog = selectLogElement.parentElement;
   liLog.removeChild(selectLogElement);
   const logInfo = getLogInfo(elevator);

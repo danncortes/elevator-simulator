@@ -16,7 +16,7 @@ const environmentConfig: EnvironmentConfig = {
     speedByFloor: 2000,
     openCloseDoors: 2000,
     waiting: 3500,
-  }
+  },
 };
 
 export default environmentConfig;

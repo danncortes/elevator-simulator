@@ -4,7 +4,7 @@ import {
   form,
   buildingStructure,
   resetButton,
-  systemStructure
+  systemStructure,
 } from './ui/uiCtrl';
 
 import { createLogStructure } from './log/logCtrl';
@@ -22,10 +22,9 @@ export function buildForm(mainContainer: Element): void {
 
 export function createBuilding(mainContainer) {
   return new Promise((resolve, reject) => {
-
     let building: BuildingInterface;
 
-    const createBuildingButton = document.querySelector('.create-building');;
+    const createBuildingButton = document.querySelector('.create-building');
     const settingsSection: Element = document.querySelector('.settings');
     const inputFloor: HTMLFormElement = document.querySelector('#floors');
     const inputElevators: HTMLFormElement = document.querySelector('#elevators');
@@ -45,12 +44,12 @@ export function createBuilding(mainContainer) {
         // Remove Form
         settingsSection.parentNode.removeChild(settingsSection);
 
-        //Create system container
+        // Create system container
         mainContainer.insertAdjacentHTML('beforeend', systemStructure);
         const systemContainer = document.querySelector('.system-container');
         const buildingArea = document.querySelector('.building-area');
 
-        //Insert reset Button
+        // Insert reset Button
         systemContainer.insertAdjacentHTML('afterbegin', resetButton);
         resetBtn = document.querySelector('.reset-button');
 
@@ -68,8 +67,8 @@ export function createBuilding(mainContainer) {
             building.elevators = onClickElevatorCallButton(ev, building, nFloors);
           });
         });
-        resolve(resetBtn)
+        resolve(resetBtn);
       }
-    })
-  })
+    });
+  });
 }

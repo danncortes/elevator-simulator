@@ -3,7 +3,7 @@ import {
   FloorParam,
   Queue,
   Direction,
-  FloorCalledFrom
+  FloorCalledFrom,
 } from './types';
 
 interface ElevatorInterface {

@@ -6,16 +6,24 @@ module.exports = {
     "jest/globals": true
   },
   "extends": "airbnb-base",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
-      "jsx": true,
-      "modules": true,
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".ts",
+        ]
+      }
     },
+    "import/parsers": {
+      "typescript-eslint-parser": [ ".ts" ]
+    }
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
     "sourceType": "module"
   },
   "plugins": [
-    "jest"
+    "jest", "prettier", "typescript"
   ],
   "rules": {
     "indent": [
@@ -35,5 +43,5 @@ module.exports = {
       { "allowForLoopAfterthoughts": true }
     ]
   },
-  "parser": "babel-eslint",
+  "parser": "typescript-eslint-parser",
 };

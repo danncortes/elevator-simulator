@@ -4,10 +4,6 @@ import { setTravelTime } from './elevator/setTravelTime';
 
 import config from './config';
 
-const {
-  times: { openCloseDoors, waiting },
-} = config;
-
 import {
   Queue,
   Direction,
@@ -16,8 +12,12 @@ import {
 
 
 import {
-  ElevatorInterface
+  ElevatorInterface,
 } from './interfaces';
+
+const {
+  times: { openCloseDoors, waiting },
+} = config;
 
 class Elevator implements ElevatorInterface {
   constructor(
@@ -32,15 +32,19 @@ class Elevator implements ElevatorInterface {
   startEngine(floorParameters) {
     return runElevator.call(this, floorParameters);
   }
+
   setNextFloorAndDirection() {
-    return setNextFloorAndDirection.call(this)
+    return setNextFloorAndDirection.call(this);
   }
+
   setTimeOut: null | Function = null
+
   moveElevator(floorParameters) {
-    return moveElevator.call(this, floorParameters)
+    return moveElevator.call(this, floorParameters);
   }
+
   whenElevatorArrives(floorParameters) {
-    return whenElevatorArrives.call(this, floorParameters)
+    return whenElevatorArrives.call(this, floorParameters);
   }
 }
 
@@ -55,12 +59,14 @@ function whenElevatorArrives(floorParameters) {
   desactivateFloorButton(this.currentFloor, this.next.dir);
   this.setNextFloorAndDirection();
   this.isMoving = false;
-  updateLog(this)
+  updateLog(this);
   this.startEngine(floorParameters);
 }
 
 function moveElevator(floorParameters): void {
-  const { id, next, currentFloor, isMoving } = this;
+  const {
+    id, next, currentFloor, isMoving,
+  } = this;
   const elevatorElement = <HTMLElement>document.querySelectorAll(`[data-elevator="${id}"]`)[0];
   const nextYPosition = floorParameters[next.floor];
   const travelTime = setTravelTime(isMoving, elevatorElement, nextYPosition, currentFloor, next);
@@ -69,25 +75,25 @@ function moveElevator(floorParameters): void {
   elevatorElement.style.bottom = `${nextYPosition}px`;
   this.isMoving = true;
   this.setTimeOut = setTimeout(() => {
-    this.whenElevatorArrives(floorParameters)
-  }, travelTime)
+    this.whenElevatorArrives(floorParameters);
+  }, travelTime);
 }
 function runElevator(floorParameters): void {
-  if (!!this.queue.length) {
-    //Waiting...
+  if (this.queue.length) {
+    // Waiting...
     setTimeout(() => {
-      //Closing doors...
+      // Closing doors...
       setTimeout(() => {
-        //Starting travel...
+        // Starting travel...
         this.moveElevator(floorParameters);
       }, openCloseDoors);
     }, waiting);
   } else {
     this.direction = 0;
-    updateLog(this)
+    updateLog(this);
   }
 }
 
 export {
-  Elevator
+  Elevator,
 };

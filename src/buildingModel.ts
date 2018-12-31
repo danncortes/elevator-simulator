@@ -3,11 +3,11 @@ import config from './config';
 import {
   FloorParam,
   Elevators,
-  FloorCalledFrom
+  FloorCalledFrom,
 } from './types';
 
 import {
-  BuildingInterface
+  BuildingInterface,
 } from './interfaces';
 
 import { Elevator } from './elevatorModel';
@@ -20,11 +20,13 @@ class Building implements BuildingInterface {
     public elevators: Elevators,
   ) {
   }
+
   assignFloorToElevator(elevatorId, calledFromFloor: FloorCalledFrom) {
-    return assignFloorToElevator.call(this, elevatorId, calledFromFloor)
+    return assignFloorToElevator.call(this, elevatorId, calledFromFloor);
   }
+
   reAssignElevator(elevatorId) {
-    return reAssignElevator.call(this, elevatorId)
+    return reAssignElevator.call(this, elevatorId);
   }
 }
 
@@ -35,7 +37,7 @@ function assignFloorToElevator(elevatorId, calledFromFloor: FloorCalledFrom): vo
 
 function reAssignElevator(elevatorId) {
   clearTimeout(this.elevators[elevatorId].setTimeOut);
-  this.elevators[elevatorId].moveElevator(this.floorParameters)
+  this.elevators[elevatorId].moveElevator(this.floorParameters);
 }
 
 function floorParameters(floors: number): FloorParam {

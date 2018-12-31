@@ -1,5 +1,5 @@
 import {
-  ElevatorInterface
+  ElevatorInterface,
 } from '../interfaces';
 
 type FloorCalledFrom = {
@@ -33,19 +33,19 @@ type InfoLog = {
   isMoving: boolean,
   next: FloorCalledFrom,
   queue: Queue
-}
+};
 
 type FloorParam = {
   [key: number]: number
 };
 
-type Queue = FloorCalledFrom[]
+type Queue = FloorCalledFrom[];
 
 type Direction = 0 | 1 | 2;
 
 type Elevators = {
   [key: number]: ElevatorInterface
-}
+};
 
 export {
   Elevators,
@@ -55,6 +55,5 @@ export {
   FloorParam,
   Queue,
   Direction,
-  InfoLog
+  InfoLog,
 };
-

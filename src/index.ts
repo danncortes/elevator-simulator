@@ -1,11 +1,10 @@
 import './style.scss';
 import {
   buildForm,
-  createBuilding
+  createBuilding,
 } from './mainCtrl';
 
 function initSystem(): void {
-
   const mainContainer: Element = document.querySelector('.main-container');
   // Build form
   buildForm(mainContainer);
@@ -14,8 +13,10 @@ function initSystem(): void {
     const resetButton = res;
     resetButton.addEventListener('click', () => {
       location.reload();
-    })
-  })
+    });
+  });
 }
+
+export function myTest() { }
 
 initSystem();

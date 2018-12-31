@@ -60,7 +60,8 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.118",
-    "npm": "^6.4.1"
+    "npm": "^6.4.1",
+    "pre-commit": "^1.2.2"
   },
   "jest": {
     "moduleNameMapper": {

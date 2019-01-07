@@ -1,6 +1,6 @@
 import { assignAndSortQueue } from './assignAndSortQueue';
 
-it('Should add the floor to the queue when it\'s empty', () => {
+it("Should add the floor to the queue when it's empty", () => {
   const currentQueue = [];
   const queue = assignAndSortQueue({ floor: 2, dir: 2 }, 1, 2, currentQueue);
   expect(queue).toEqual([{ floor: 2, dir: 2 }]);

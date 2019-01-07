@@ -58,37 +58,29 @@ function createFloorControl(floors: number): string {
 }
 
 export const form: string = `<section class="settings">
-    <form class="initial-setting-form">
-      ${formGroup(
-    'How many Floors?',
-    'floors',
-    4,
-    4,
-    80,
-    'Type a number',
-    'This field is required!'
-  )}
-      ${formGroup(
-    'How many elevators?',
-    'elevators',
-    2,
-    1,
-    10,
-    'Type a number',
-    'This field is required!'
-  )}
-      <div class="switch-container">
-        <h4 class="title">Distributed queue?</h4>
-        <div class="doc-switch">
-          <input type="checkbox" value="true" id="queue-check" checked onClick="(()=>{this.value = !this.value})()">
-          <div></div>
-        </div>
+  <form class="initial-setting-form">
+    ${formGroup('How many Floors?', 'floors', 4, 4, 80, 'Type a number', 'This field is required!')}
+    ${formGroup(
+      'How many elevators?',
+      'elevators',
+      2,
+      1,
+      10,
+      'Type a number',
+      'This field is required!'
+    )}
+    <div class="switch-container">
+      <h4 class="title">Distributed queue?</h4>
+      <div class="doc-switch">
+        <input type="checkbox" value="true" id="queue-check" checked onClick="(()=>{this.value = !this.value})()">
+        <div></div>
       </div>
-      <div class="form-group button-cont">
-        <button class="create-building">Build it!</button>
-      </div>
-    </form>
-  </section>`;
+    </div>
+    <div class="form-group button-cont">
+      <button class="create-building">Build it!</button>
+    </div>
+  </form>
+</section>`;
 
 export const systemStructure = `<section class="system-container">
     <section class="columns-cont">

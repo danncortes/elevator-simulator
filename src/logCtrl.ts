@@ -59,8 +59,8 @@ export function getLogInfo(elevator) {
     direction === 2
       ? [...queue[2], ...queue[1]]
       : direction === 1
-        ? [...queue[1], ...queue[2]]
-        : [];
+      ? [...queue[1], ...queue[2]]
+      : [];
   const next = queueList.shift();
   return {
     id,

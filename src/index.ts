@@ -17,4 +17,3 @@ function initSystem(): void {
 export function myTest() {}
 
 initSystem();
-

@@ -2,11 +2,11 @@ import _ from 'lodash';
 import config from '../config';
 import formGroup from './formGroup';
 
-export const resetButton = (`
+export const resetButton = `
   <div class="reset-bnt-container">
     <button class="reset-button">Reset</button>
   </div>
-`)
+`;
 
 function createFloorNumbers(floors: number): string {
   let floorsStructure: string = '';
@@ -29,11 +29,9 @@ function createElevatorsStructure(elevators: number, floors: number): string {
   const elevatorLaneHeight = config.building.elevatorLaneHeight(floors);
   const { elevatorWidth, elevatorHeight } = config.building;
   for (let i = 1; i <= elevators; i++) {
-    elevatorStructure += (
-      `<div class="elevator-lane" style="height:${elevatorLaneHeight}px">
+    elevatorStructure += `<div class="elevator-lane" style="height:${elevatorLaneHeight}px">
         <div class="elevator" data-elevator="${i}" style="width:${elevatorWidth}px; height:${elevatorHeight}px"></div>
-      </div>`
-    );
+      </div>`;
   }
   return elevatorStructure;
 }
@@ -59,11 +57,26 @@ function createFloorControl(floors: number): string {
   return controls;
 }
 
-export const form: string = (
-  `<section class="settings">
+export const form: string = `<section class="settings">
     <form class="initial-setting-form">
-      ${formGroup('How many Floors?', 'floors', 4, 4, 80, 'Type a number', 'This field is required!')}
-      ${formGroup('How many elevators?', 'elevators', 2, 1, 10, 'Type a number', 'This field is required!')}
+      ${formGroup(
+    'How many Floors?',
+    'floors',
+    4,
+    4,
+    80,
+    'Type a number',
+    'This field is required!'
+  )}
+      ${formGroup(
+    'How many elevators?',
+    'elevators',
+    2,
+    1,
+    10,
+    'Type a number',
+    'This field is required!'
+  )}
       <div class="switch-container">
         <h4 class="title">Distributed queue?</h4>
         <div class="doc-switch">
@@ -75,11 +88,9 @@ export const form: string = (
         <button class="create-building">Build it!</button>
       </div>
     </form>
-  </section>`
-);
+  </section>`;
 
-export const systemStructure = (
-  `<section class="system-container">
+export const systemStructure = `<section class="system-container">
     <section class="columns-cont">
       <section class="log-area">
         <ul class="log-container">
@@ -88,13 +99,11 @@ export const systemStructure = (
       <section class="building-area">
       </section>
     </section>
-  </section>`
-)
+  </section>`;
 
 export function buildingStructure(floors: number, elevators: number, queueType): string {
   const { floorHeight } = config.building;
-  return (
-    `<div class="building-container">
+  return `<div class="building-container">
       <div class="floor-numbers">
         ${createFloorNumbers(floors)}
       </div>
@@ -109,14 +118,10 @@ export function buildingStructure(floors: number, elevators: number, queueType):
       <div class="controls" data-queue="${queueType}">
         ${createFloorControl(floors)}
       </div>
-    </div>`
-  );
+    </div>`;
 }
 
-export const logArea: string = (
-  `<section class="log-area">
+export const logArea: string = `<section class="log-area">
     <div class="log-container">
     </div>
-  </section>`
-);
-
+  </section>`;

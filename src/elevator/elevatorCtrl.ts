@@ -1,6 +1,4 @@
-import {
-  FloorCalledFrom
-} from '../types';
+import { FloorCalledFrom } from '../types';
 
 import { updateLog } from '../log/logCtrl';
 
@@ -17,7 +15,7 @@ function assignFloorToElevator(elevator, calledFromFloor: FloorCalledFrom): Floo
 export function onClickElevatorCallButton(ev, building, buildingFloors) {
   const floor: number = Number(ev.target.dataset.floor);
   const dir: number = Number(ev.target.dataset.dir);
-  const controlsContainer: HTMLElement = document.querySelector('.controls')
+  const controlsContainer: HTMLElement = document.querySelector('.controls');
   const queueType: boolean = controlsContainer.dataset.queue === 'true' ? true : false;
 
   const calledFromFloor: FloorCalledFrom = { floor, dir };
@@ -28,7 +26,12 @@ export function onClickElevatorCallButton(ev, building, buildingFloors) {
   if (!isCalledAlready && !isAtTheSameFloor) {
     ev.target.classList.add('active');
 
-    const elevatorId: number = chooseElevator(queueType, calledFromFloor, building.elevators, buildingFloors);
+    const elevatorId: number = chooseElevator(
+      queueType,
+      calledFromFloor,
+      building.elevators,
+      buildingFloors
+    );
     // Asign floor to Elevator
 
     const elevatorQueue = building.elevators[elevatorId].queue;

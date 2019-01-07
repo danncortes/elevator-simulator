@@ -5,7 +5,8 @@ export default function formGroup(
   min: number,
   max: number,
   placeHolder: string,
-  errorMessage: string): string {
+  errorMessage: string
+): string {
   return `<div class="form-group">
     <label>${label}</label>
     <div>

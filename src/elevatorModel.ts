@@ -4,19 +4,12 @@ import { setTravelTime } from './elevator/setTravelTime';
 
 import config from './config';
 
-import {
-  Queue,
-  Direction,
-  FloorCalledFrom,
-} from './types';
+import { Queue, Direction, FloorCalledFrom } from './types';
 
-
-import {
-  ElevatorInterface,
-} from './interfaces';
+import { ElevatorInterface } from './interfaces';
 
 const {
-  times: { openCloseDoors, waiting },
+  times: { openCloseDoors, waiting }
 } = config;
 
 class Elevator implements ElevatorInterface {
@@ -26,8 +19,8 @@ class Elevator implements ElevatorInterface {
     public isMoving: boolean,
     public direction: Direction,
     public queue: Queue,
-    public next: boolean | FloorCalledFrom,
-  ) { }
+    public next: boolean | FloorCalledFrom
+  ) {}
 
   startEngine(floorParameters) {
     return runElevator.call(this, floorParameters);
@@ -37,7 +30,7 @@ class Elevator implements ElevatorInterface {
     return setNextFloorAndDirection.call(this);
   }
 
-  setTimeOut: null | Function = null
+  setTimeOut: null | Function = null;
 
   moveElevator(floorParameters) {
     return moveElevator.call(this, floorParameters);
@@ -50,7 +43,7 @@ class Elevator implements ElevatorInterface {
 
 function setNextFloorAndDirection(): void {
   const { currentFloor } = this;
-  this.next = (this.queue[0] || false);
+  this.next = this.queue[0] || false;
   this.direction = this.next ? (this.next.floor > currentFloor ? 2 : 1) : 0;
 }
 
@@ -64,9 +57,7 @@ function whenElevatorArrives(floorParameters) {
 }
 
 function moveElevator(floorParameters): void {
-  const {
-    id, next, currentFloor, isMoving,
-  } = this;
+  const { id, next, currentFloor, isMoving } = this;
   const elevatorElement = <HTMLElement>document.querySelectorAll(`[data-elevator="${id}"]`)[0];
   const nextYPosition = floorParameters[next.floor];
   const travelTime = setTravelTime(isMoving, elevatorElement, nextYPosition, currentFloor, next);
@@ -94,6 +85,4 @@ function runElevator(floorParameters): void {
   }
 }
 
-export {
-  Elevator,
-};
+export { Elevator };

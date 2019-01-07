@@ -1,4 +1,3 @@
-
 import { isAtTheSameFloorFrom } from './isAtTheSameFloorFrom';
 
 it('Should return TRUE if the elevator IS in the same floor where the is called from', () => {

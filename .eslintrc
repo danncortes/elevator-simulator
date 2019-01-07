@@ -1,0 +1,42 @@
+{
+
+  "parser": "typescript-eslint-parser",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2018
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".ts"
+        ]
+      }
+    },
+    "import/parsers": {
+      "typescript-eslint-parser": [ ".ts" ]
+    }
+  },
+  "plugins": ["jest", "typescript"],
+  "rules": {
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-console": "warn"
+  },
+  "overrides": [{
+    "files": ["**/*.ts"],
+    "parser": "typescript-eslint-parser",
+    "rules": {
+      "no-undef": "off",
+      "no-unused-vars": "off"
+    }
+  }]
+}

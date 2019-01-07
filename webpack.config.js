@@ -6,9 +6,7 @@ const path = require('path');
 
 function plugins(argv) {
   if (argv.mode === 'production') {
-    return [
-      new OptimizeCSSAssetsPlugin({}),
-    ];
+    return [new OptimizeCSSAssetsPlugin({})];
   }
   return [];
 }
@@ -17,14 +15,14 @@ module.exports = (env, argv) => ({
   entry: { bundle: './src/index.ts' },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
+    filename: '[name].js'
   },
   devtool: 'eval-source-map',
   devServer: {
-    open: true,
+    open: true
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.json']
   },
   module: {
     rules: [
@@ -32,8 +30,8 @@ module.exports = (env, argv) => ({
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-        },
+          loader: 'babel-loader'
+        }
       },
       {
         test: /\.(scss|css)$/,
@@ -42,14 +40,14 @@ module.exports = (env, argv) => ({
             loader: MiniCssExtractPlugin.loader,
             options: {
               publicPath: '../',
-              minimize: true,
-            },
+              minimize: true
+            }
           },
           'css-loader',
-          'sass-loader',
-        ],
-      },
-    ],
+          'sass-loader'
+        ]
+      }
+    ]
   },
   optimization: {
     splitChunks: {
@@ -58,22 +56,23 @@ module.exports = (env, argv) => ({
           name: 'styles',
           test: /\.css$/,
           chunks: 'all',
-          enforce: false,
-        },
-      },
-    },
+          enforce: false
+        }
+      }
+    }
   },
   plugins: [
     new CleanWebpackPlugin('dist'),
     new HtmlWebpackPlugin(),
-    new HtmlWebpackPlugin({ // Also generate a test.html
+    new HtmlWebpackPlugin({
+      // Also generate a test.html
       filename: 'index.html',
-      template: './src/index.html',
+      template: './src/index.html'
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[id].css',
+      chunkFilename: '[id].css'
     }),
-    ...plugins(argv),
-  ],
+    ...plugins(argv)
+  ]
 });

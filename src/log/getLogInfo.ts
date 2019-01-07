@@ -4,7 +4,7 @@ import { InfoLog } from '../types';
 
 export function getLogInfo(elevator): InfoLog {
   const { direction, queue, id, currentFloor, isMoving, next } = elevator;
-  const queueList = _.map(queue, el => el.floor);
+  const queueList = _.map(queue, (el) => el.floor);
   queueList.shift();
   return {
     id,
@@ -13,5 +13,5 @@ export function getLogInfo(elevator): InfoLog {
     isMoving,
     next,
     queue: queueList
-  }
+  };
 }

@@ -1,14 +1,12 @@
 import * as _ from 'lodash';
 
 export function logItem(logInfo) {
-  const {
-    id, direction, next, queue, currentFloor, isMoving,
-  } = logInfo;
+  const { id, direction, next, queue, currentFloor, isMoving } = logInfo;
 
-  const dirStatus = direction === 0 ? '-' : (direction === 2 ? '>' : '<');
-  const isQueueEmpty = (queue.length === 0);
+  const dirStatus = direction === 0 ? '-' : direction === 2 ? '>' : '<';
+  const isQueueEmpty = queue.length === 0;
 
-  const isStop = (direction === 0 && isQueueEmpty && !isMoving);
+  const isStop = direction === 0 && isQueueEmpty && !isMoving;
 
   const queueList = () => {
     let list = '';
@@ -19,15 +17,14 @@ export function logItem(logInfo) {
   };
 
   function statusText(statusText) {
-    return (`
+    return `
       <div class="status-text">
         ${statusText}
       </div>
-    `);
+    `;
   }
 
-  const queueInfo = (
-    `<div class="status">
+  const queueInfo = `<div class="status">
       <div class="icon">${dirStatus}</div>
     </div>
     <div class="queue">
@@ -35,8 +32,7 @@ export function logItem(logInfo) {
       <ul>
         ${queueList()}
       </ul>
-    </div>`
-  );
+    </div>`;
 
   function displayState() {
     if (isStop) {
@@ -45,7 +41,7 @@ export function logItem(logInfo) {
     return queueInfo;
   }
 
-  return (`
+  return `
     <article class="log-item log-elev-${id}">
       <div class="title">
         <h3>Elevator ${id}</h3>
@@ -53,15 +49,18 @@ export function logItem(logInfo) {
       <div class="current">${currentFloor}</div>
       ${displayState()}
     </article>
-  `);
+  `;
 }
 
 export function getLogInfo(elevator) {
-  const {
-    direction, queue, id, currentFloor, isMoving,
-  } = elevator;
+  const { direction, queue, id, currentFloor, isMoving } = elevator;
   let queueList = [];
-  queueList = direction === 2 ? [...queue[2], ...queue[1]] : (direction === 1 ? [...queue[1], ...queue[2]] : []);
+  queueList =
+    direction === 2
+      ? [...queue[2], ...queue[1]]
+      : direction === 1
+        ? [...queue[1], ...queue[2]]
+        : [];
   const next = queueList.shift();
   return {
     id,
@@ -69,7 +68,7 @@ export function getLogInfo(elevator) {
     currentFloor,
     isMoving,
     next,
-    queue: queueList,
+    queue: queueList
   };
 }
 

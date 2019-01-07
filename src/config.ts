@@ -10,13 +10,13 @@ const environmentConfig: EnvironmentConfig = {
     floorDivHeight: 8,
     elevatorLaneHeight(floors) {
       return floors * this.floorHeight + (floors - 1) * this.floorDivHeight;
-    },
+    }
   },
   times: {
     speedByFloor: 2000,
     openCloseDoors: 2000,
-    waiting: 3500,
-  },
+    waiting: 3500
+  }
 };
 
 export default environmentConfig;

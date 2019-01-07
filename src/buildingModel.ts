@@ -1,25 +1,15 @@
 import config from './config';
 
-import {
-  FloorParam,
-  Elevators,
-  FloorCalledFrom,
-} from './types';
+import { FloorParam, Elevators, FloorCalledFrom } from './types';
 
-import {
-  BuildingInterface,
-} from './interfaces';
+import { BuildingInterface } from './interfaces';
 
 import { Elevator } from './elevatorModel';
 
 import { assignAndSortQueue } from './elevator/assignAndSortQueue';
 
 class Building implements BuildingInterface {
-  constructor(
-    public floorParameters: FloorParam,
-    public elevators: Elevators,
-  ) {
-  }
+  constructor(public floorParameters: FloorParam, public elevators: Elevators) {}
 
   assignFloorToElevator(elevatorId, calledFromFloor: FloorCalledFrom) {
     return assignFloorToElevator.call(this, elevatorId, calledFromFloor);
@@ -32,7 +22,12 @@ class Building implements BuildingInterface {
 
 function assignFloorToElevator(elevatorId, calledFromFloor: FloorCalledFrom): void {
   const { currentFloor, direction, queue } = this.elevators[elevatorId];
-  this.elevators[elevatorId].queue = assignAndSortQueue(calledFromFloor, currentFloor, direction, queue);
+  this.elevators[elevatorId].queue = assignAndSortQueue(
+    calledFromFloor,
+    currentFloor,
+    direction,
+    queue
+  );
 }
 
 function reAssignElevator(elevatorId) {

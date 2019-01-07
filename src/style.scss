@@ -13,7 +13,7 @@ body {
   flex-direction: row;
 
   .log-area {
-    flex-basis: 50%
+    flex-basis: 50%;
   }
 
   .building-area {
@@ -71,7 +71,7 @@ h1 {
     font-size: 16px;
     padding: 6px 10px;
     border-radius: 4px;
-    cursor: pointer
+    cursor: pointer;
   }
 }
 
@@ -226,7 +226,7 @@ h1 {
   padding: 0;
   list-style: none;
 
-  &>li {
+  & > li {
     margin-bottom: 8px;
   }
 }
@@ -307,47 +307,47 @@ h1 {
   $width: 36px;
   $height: 20px;
   $padding: 3px;
-  position:relative;
-  width:$width;
-  height:$height;
-  & div{
-    cursor:pointer;
-    height:$height;
-    width:$width;
-    left:0;
-    top:0;
-    position:relative;
-    display:block;
-    content:'';
+  position: relative;
+  width: $width;
+  height: $height;
+  & div {
+    cursor: pointer;
+    height: $height;
+    width: $width;
+    left: 0;
+    top: 0;
+    position: relative;
+    display: block;
+    content: '';
     background-color: #ccc;
     border-radius: $height;
-    &::after{
-      cursor:pointer;
+    &::after {
+      cursor: pointer;
       transition: all 0.1s;
       top: $padding;
-      left:$padding;
+      left: $padding;
       border-radius: 50%;
-      position:absolute;
-      content:'';
+      position: absolute;
+      content: '';
       height: $height - ($padding * 2);
-      width:$height - ($padding * 2);
+      width: $height - ($padding * 2);
       background-color: white;
       z-index: 1;
     }
   }
-  & > input:checked + div{
+  & > input:checked + div {
     background-color: #33cc33;
-    &::after{
+    &::after {
       left: $width - ($height - $padding);
     }
   }
-  & > input{
-    position:absolute;
-    margin:0px 0 0 0px;
+  & > input {
+    position: absolute;
+    margin: 0px 0 0 0px;
     width: $width;
     height: $height;
-    z-index:2;
-    cursor:pointer;
-    opacity:0;
+    z-index: 2;
+    cursor: pointer;
+    opacity: 0;
   }
 }

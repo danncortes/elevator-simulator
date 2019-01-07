@@ -1,23 +1,16 @@
 import { configElevators } from './buildingModel';
 
-import {
-  form,
-  buildingStructure,
-  resetButton,
-  systemStructure,
-} from './ui/uiCtrl';
+import { form, buildingStructure, resetButton, systemStructure } from './ui/uiCtrl';
 
 import { createLogStructure } from './log/logCtrl';
 
 import { BuildingInterface } from './interfaces';
 
-import {
-  onClickElevatorCallButton,
-} from './elevator/elevatorCtrl';
+import { onClickElevatorCallButton } from './elevator/elevatorCtrl';
 
 export function buildForm(mainContainer: Element): void {
   // Create Form
-  (mainContainer && mainContainer.insertAdjacentHTML('beforeend', form));
+  mainContainer && mainContainer.insertAdjacentHTML('beforeend', form);
 }
 
 export function createBuilding(mainContainer) {
@@ -54,7 +47,10 @@ export function createBuilding(mainContainer) {
         resetBtn = document.querySelector('.reset-button');
 
         // Building Creation
-        buildingArea.insertAdjacentHTML('beforeend', buildingStructure(nFloors, nElevators, queueType));
+        buildingArea.insertAdjacentHTML(
+          'beforeend',
+          buildingStructure(nFloors, nElevators, queueType)
+        );
         // Log Area creation
         const logContainer: Element = document.querySelector('.log-container');
         logContainer.insertAdjacentHTML('beforeend', createLogStructure(building.elevators));

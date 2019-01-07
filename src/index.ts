@@ -1,8 +1,5 @@
 import './style.scss';
-import {
-  buildForm,
-  createBuilding,
-} from './mainCtrl';
+import { buildForm, createBuilding } from './mainCtrl';
 
 function initSystem(): void {
   const mainContainer: Element = document.querySelector('.main-container');
@@ -17,6 +14,7 @@ function initSystem(): void {
   });
 }
 
-export function myTest() { }
+export function myTest() {}
 
 initSystem();
+

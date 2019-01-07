@@ -1,28 +1,29 @@
 import * as _ from 'lodash';
 
-import {
-  ChooseElevator,
-  FloorCalledFrom
-} from '../types';
+import { ChooseElevator, FloorCalledFrom } from '../types';
 
-import { Elevator, } from '../elevatorModel';
+import { Elevator } from '../elevatorModel';
 import { Elevators } from '../types';
 
 type ChosenElevator = {
-  id: number,
-  distance: number
+  id: number;
+  distance: number;
 };
 
-export const chooseElevator: ChooseElevator = (distributed: boolean, floorCall: FloorCalledFrom, elevators: Elevators, buildingFloors: number): number => {
-
-  const stoppedElevators = {}
+export const chooseElevator: ChooseElevator = (
+  distributed: boolean,
+  floorCall: FloorCalledFrom,
+  elevators: Elevators,
+  buildingFloors: number
+): number => {
+  const stoppedElevators = {};
   _.forEach(elevators, (el: Elevator, key) => {
     if (el.direction === 0) {
       stoppedElevators[key] = el;
     }
   });
 
-  elevators = (!_.isEmpty(stoppedElevators)) ? stoppedElevators : elevators;
+  elevators = !_.isEmpty(stoppedElevators) ? stoppedElevators : elevators;
 
   let chosenElevator;
 
@@ -39,7 +40,7 @@ export const chooseElevator: ChooseElevator = (distributed: boolean, floorCall: 
       if (dirCall === 2) {
         // Called to Go up
         if (direction === 1) {
-          distance = (floorCall.floor - 1) + (currentFloor - 1);
+          distance = floorCall.floor - 1 + (currentFloor - 1);
         } else if (direction === 2) {
           if (currentFloor < floorCall.floor) {
             distance = floorCall.floor - currentFloor;
@@ -48,9 +49,11 @@ export const chooseElevator: ChooseElevator = (distributed: boolean, floorCall: 
           }
         }
       } else if (dirCall === 1) {
-        if (direction === 2) { // Elevator going Up
-          distance = (buildingFloors - currentFloor) + (buildingFloors - floorCall.floor);
-        } else if (direction === 1) { // Elevator going Down
+        if (direction === 2) {
+          // Elevator going Up
+          distance = buildingFloors - currentFloor + (buildingFloors - floorCall.floor);
+        } else if (direction === 1) {
+          // Elevator going Down
           if (currentFloor > floorCall.floor) {
             distance = currentFloor - floorCall.floor;
           } else {
@@ -73,4 +76,4 @@ export const chooseElevator: ChooseElevator = (distributed: boolean, floorCall: 
     });
   }
   return Number(chosenElevator.id);
-}
+};
